@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% now "Y-m-d" as today %}
+{% block content %}
+<section class="page-shell">
+  <div class="container">
+    <div class="hero-card mb-4">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <div class="text-uppercase text-muted mb-2">Hotel search</div>
+          <h1 class="t mb-3">Hotels</h1>
+          <p class="text-muted mb-0">Search comfortable stays, compare pricing, and book available rooms instantly.</p>
+        </div>
+        <div class="col-lg-5 mt-4 mt-lg-0">
+          <div class="search-card p-4">
+            <form class="form-group" action="" method="POST" id="hotelSearchForm">
+              {% csrf_token %}
+              <div class="mb-2">
+                <label class="form-label">City</label>
+                <input type="text" name="city" id="city_input" list="city_list" class="form-control" placeholder="Enter city">
+                <datalist id="city_list"></datalist>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Date</label>
+                {{ form.date }}
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Filters</label>
+                {% comment %} reuse search filter form if available {% endcomment %}
+                {% if filter_form %}
+                  {{ filter_form.as_p }}
+                {% endif %}
+                <small class="text-muted d-block mt-1">New: set a max budget to quickly narrow hotel results.</small>
+              </div>
+              <button class="btn btn-primary btn-block">SEARCH</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if city_airport %}
+    <div class="container mb-4">
+      <div class="alert alert-success" role="alert">
+        <strong>✈️ Airports in {{ city_airport }}</strong><br>
+        <strong>Main Airport:</strong> {{ city_airport.main }}<br>
+        <strong>Code:</strong> {{ city_airport.code }}
+        {% if city_airport.nearby %}
+        <br><strong>Nearby Airports:</strong><br>
+        <ul style="margin-bottom: 0; margin-top: 10px;">
+          {% for airport in city_airport.nearby %}
+            <li>{{ airport }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% for i in Hotels %}
+    <div class="hotel mb-4">
+      <div class="container">
+        {% if date %}
+        <a class="ht text-decoration-none" href="{% url 'bookhotel' i.id date %}">
+        {% else %}
+        <a class="ht text-decoration-none" href="{% url 'bookhotel' i.id today %}">
+        {% endif %}
+          <div class="row result-card p-3 align-items-stretch">
+            <div class="col-md-4 mb-3 mb-md-0">
+              {% if i.image1 %}
+              <img class="h-img shadow-sm" src="{{ i.image1.url }}" alt="{{ i.hotel_name }}">
+              {% else %}
+              <img class="h-img shadow-sm" src="{% static 'img/hotel1.png' %}" alt="{{ i.hotel_name }}">
+              {% endif %}
+            </div>
+            <div class="col-md-8 d-flex flex-column justify-content-between">
+              <div>
+                <p class="h-name">{{i.hotel_name}}</p>
+                <p class="h-add">{{i.hotel_address}}.<br>{{ i.distfromap }} KM from nearest airport.</p>
+              </div>
+              <div class="d-flex flex-wrap align-items-end justify-content-between">
+                <div>
+                  <p class="h-price mb-0">{{ i.hotel_price }}*</p>
+                  <p class="h-pricex mb-0">/night</p>
+                </div>
+                <div class="text-right">
+                  <div class="h-rate">
+                    {% with ''|center:i.hotel_rating as range %}
+                      {% for _ in range %}
+                          ★
+                      {% endfor %}
+                    {% endwith %}
+                  </div>
+                  <p class="h-am mb-0">{{ i.amenities}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="mt-2 text-right">
+          <button type="button" class="btn btn-sm btn-outline-danger js-add-wishlist" data-item-type="hotel" data-item-id="{{ i.id }}">Add to wishlist</button>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="container mt-4">
+      <div class="hero-card alert alert-info mb-0">
+        Use the search form to find available hotels.
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const cityInput = document.getElementById('city_input');
+  const cityList = document.getElementById('city_list');
+
+  function fetchSuggestions(q, type, listEl){
+    if(!q || q.length < 1) return;
+    fetch(`/api/autocomplete/?q=${encodeURIComponent(q)}&type=${type}`)
+      .then(res => res.json())
+      .then(data => {
+        listEl.innerHTML = '';
+        (data.results || []).forEach(item => {
+          const opt = document.createElement('option');
+          opt.value = item;
+          listEl.appendChild(opt);
+        });
+      }).catch(()=>{});
+  }
+
+  cityInput.addEventListener('input', function(e){ fetchSuggestions(e.target.value, 'city', cityList); });
+});
+</script>
+{% endblock %}

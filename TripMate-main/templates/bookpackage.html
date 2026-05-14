@@ -1,0 +1,450 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.main{
+    min-height: 100vh;
+}
+
+/* SEARCH SECTION */
+
+.search-card{
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 30px;
+}
+
+.search-title{
+    text-align: center;
+    font-weight: bold;
+    color: #0d6efd;
+    margin-bottom: 25px;
+}
+
+/* FLIGHT CARD */
+
+.flight-card{
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.flight-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0px 12px 25px rgba(0,0,0,0.15);
+}
+
+.flight-header{
+    padding: 18px;
+    color: white;
+}
+
+.available-bg{
+    background: linear-gradient(45deg,#0d6efd,#4e9eff);
+}
+
+.unavailable-bg{
+    background: linear-gradient(45deg,#dc3545,#ff6b6b);
+}
+
+.airline-name{
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.flight-no{
+    font-size: 18px;
+}
+
+.price{
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.flight-body{
+    padding: 25px;
+}
+
+.route-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.airport-box{
+    text-align: center;
+}
+
+.airport-box h4{
+    font-weight: bold;
+}
+
+.flight-arrow{
+    font-size: 35px;
+    color: #0d6efd;
+}
+
+.info-grid{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.info-card{
+    width: 23%;
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.info-card h6{
+    font-weight: bold;
+}
+
+.status-badge{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 18px;
+    border-radius: 30px;
+    color: white;
+    font-weight: bold;
+}
+
+.available{
+    background: #198754;
+}
+
+.unavailable{
+    background: #dc3545;
+}
+
+.book-btn{
+    width: 100%;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: bold;
+}
+
+.flight-features{
+    margin-top: 20px;
+}
+
+.feature{
+    display: inline-block;
+    background: #eef3ff;
+    color: #0d6efd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.no-flights{
+    text-align: center;
+    margin-top: 50px;
+    color: gray;
+}
+
+@media(max-width:768px){
+
+    .info-card{
+        width: 48%;
+    }
+
+    .route-section{
+        flex-direction: column;
+    }
+
+    .flight-arrow{
+        transform: rotate(90deg);
+        margin: 15px 0;
+    }
+
+    .airline-name{
+        font-size: 22px;
+    }
+
+    .price{
+        font-size: 28px;
+    }
+}
+
+</style>
+
+<div class="main container">
+
+    <!-- SEARCH FORM -->
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="search-card shadow-lg">
+
+                <h2 class="search-title">
+                    ✈ Search Flights
+                </h2>
+
+                <form class="form-group" action="" method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <div class="text-center">
+
+                        <button class="btn btn-primary px-5">
+                            SEARCH FLIGHTS
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <br><br>
+
+    <!-- FLIGHT LIST -->
+    {% for i in flight %}
+
+    <div class="container mb-5">
+
+        <div class="flight-card shadow-lg">
+
+            <!-- STATUS -->
+            {% if availability == "available" %}
+                <div class="status-badge available">
+                    Seats Available
+                </div>
+            {% else %}
+                <div class="status-badge unavailable">
+                    Fully Booked
+                </div>
+            {% endif %}
+
+            <!-- HEADER -->
+            <div class="flight-header {% if availability == 'available' %}available-bg{% else %}unavailable-bg{% endif %}">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                    <div>
+
+                        <div class="airline-name">
+                            {{ i.company }}
+                        </div>
+
+                        <div class="flight-no">
+                            Flight No: {{ i.flight_num }}
+                        </div>
+
+                    </div>
+
+                    <div class="price">
+                        ₹{{ price }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- BODY -->
+            <div class="flight-body">
+
+                <!-- ROUTE -->
+                <div class="route-section">
+
+                    <div class="airport-box">
+
+                        <h4>{{ i.source }}</h4>
+
+                        <p>Departure</p>
+
+                        <strong>{{ i.dept_time }}</strong>
+
+                    </div>
+
+                    <div class="flight-arrow">
+                        ✈
+                    </div>
+
+                    <div class="airport-box">
+
+                        <h4>{{ i.destination }}</h4>
+
+                        <p>Arrival</p>
+
+                        <strong>{{ i.dest_time }}</strong>
+
+                    </div>
+
+                </div>
+
+                <!-- INFO -->
+                <div class="info-grid">
+
+                    <div class="info-card">
+
+                        <h6>Date</h6>
+
+                        <p>{{ date }}</p>
+
+                    </div>
+
+                    <div class="info-card">
+
+                        <h6>Seats Left</h6>
+
+                        <p>{{ seatrem }}</p>
+
+                    </div>
+
+                    <div class="info-card">
+
+                        <h6>Passengers</h6>
+
+                        <p>{{ seatsreq }}</p>
+
+                    </div>
+
+                    <div class="info-card">
+
+                        <h6>Status</h6>
+
+                        {% if availability == "available" %}
+                            <p class="text-success">
+                                Available
+                            </p>
+                        {% else %}
+                            <p class="text-danger">
+                                Unavailable
+                            </p>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <!-- FEATURES -->
+                <div class="flight-features">
+
+                    <span class="feature">
+                        Free Meal
+                    </span>
+
+                    <span class="feature">
+                        WiFi
+                    </span>
+
+                    <span class="feature">
+                        Extra Baggage
+                    </span>
+
+                    <span class="feature">
+                        Window Seat
+                    </span>
+
+                    <span class="feature">
+                        Refund Available
+                    </span>
+
+                </div>
+
+                <br>
+
+                <!-- BUTTONS -->
+                <div class="row">
+
+                    <div class="col-md-6 mb-2">
+
+                        {% if availability == "available" %}
+
+                        <a href="/userflight/{{ i.flight_num }}/{{ date }}/{{ seatsreq }}"
+                           class="btn btn-success book-btn">
+
+                           BOOK NOW
+
+                        </a>
+
+                        {% else %}
+
+                        <button class="btn btn-danger book-btn" disabled>
+
+                            FULLY BOOKED
+
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+
+                        <button class="btn btn-outline-primary book-btn">
+
+                            VIEW DETAILS
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <!-- NO FLIGHTS -->
+    <div class="no-flights">
+
+        <img src="{% static 'img/plane.png' %}"
+             width="250">
+
+        <h3>No Flights Found</h3>
+
+        <p>
+            Try searching with another destination or date.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+    <!-- BACK BUTTON -->
+    <div class="text-center mt-5 mb-5">
+
+        <a href="{{ request.META.HTTP_REFERER }}"
+           class="btn btn-primary px-5">
+
+           ← Go Back
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

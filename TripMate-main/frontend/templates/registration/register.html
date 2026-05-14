@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-shell">
+  <div class="container">
+    <div class="auth-card">
+      <div class="text-uppercase text-muted mb-2">Create your account</div>
+      <h1 class="ht mb-4">REGISTER</h1>
+      <form class="form-group" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary btn-block mt-3">REGISTER</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

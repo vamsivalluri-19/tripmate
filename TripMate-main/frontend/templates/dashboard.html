@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="page-shell">
+  <div class="container">
+    <div class="hero-card mb-4">
+      <h1 class="section-title mb-2">Dashboard</h1>
+      <p class="text-muted mb-0">Review current bookings and cancel or rebook from one screen.</p>
+    </div>
+
+    <!-- Analytics Dashboard -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="info-card p-4 text-center h-100">
+          <ion-icon name="wallet-outline" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></ion-icon>
+          <h3 class="h5 text-muted text-uppercase mb-1">Total Spent</h3>
+          <div class="h2 font-weight-bold mb-0 text-success">₹{{ total_spent }}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="info-card p-4 text-center h-100">
+          <ion-icon name="airplane-outline" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;"></ion-icon>
+          <h3 class="h5 text-muted text-uppercase mb-1">Total Bookings</h3>
+          <div class="h2 font-weight-bold mb-0 text-primary">{{ total_bookings }}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="info-card p-4 text-center h-100">
+          <ion-icon name="star-outline" style="font-size: 3rem; color: #f2a100; margin-bottom: 1rem;"></ion-icon>
+          <h3 class="h5 text-muted text-uppercase mb-1">Loyalty Points</h3>
+          <div class="h2 font-weight-bold mb-0 text-warning">{{ loyalty_points }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card p-4 mb-4">
+      <h2 class="h4 mb-3">Flights</h2>
+      {% if flights %}
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th class="p-3">Flight Number</th>
+              <th class="p-3">Date</th>
+              <th class="p-3">Seats</th>
+              <th class="p-3">Cancel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in flights %}
+            <tr>
+              <td class="p-3 gd"><p class="mb-0">{{ i.flight }}</p></td>
+              <td class="p-3 gd"><p class="mb-0">{{ i.date }}</p></td>
+              <td class="p-3 gd"><p class="mb-0">{{ i.seat }}</p></td>
+              <td class="p-3 gd"><a class="btn btn-primary btn-sm" href="{% url 'CancelFlight' i.flight|urlencode i.date|urlencode i.seat %}">CANCEL</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-info" role="alert">
+        No flight bookings yet. <a href="{% url 'flights' %}" class="alert-link">Book a flight</a>
+      </div>
+      {% endif %}
+      <div class="mt-3"><a href="{% url 'flights' %}" class="btn btn-primary">BOOK FLIGHTS</a></div>
+    </div>
+
+    <div class="table-card p-4 mb-4">
+      <h2 class="h4 mb-3">Hotels</h2>
+      {% if hotels %}
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th class="p-3">Hotel Name</th>
+              <th class="p-3">Date</th>
+              <th class="p-3">Rooms</th>
+              <th class="p-3">Cancel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for j in hotels %}
+            <tr>
+              <td class="p-3 gd"><p class="mb-0">{{ j.hotel_name }}</p></td>
+              <td class="p-3 gd"><p class="mb-0">{{ j.date }}</p></td>
+              <td class="p-3 gd"><p class="mb-0">{{ j.room }}</p></td>
+              <td class="p-3 gd"><a class="btn btn-primary btn-sm" href="{% url 'CancelHotel' j.hotel_name|urlencode j.date|urlencode j.room %}">CANCEL</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-info" role="alert">
+        No hotel bookings yet. <a href="{% url 'hotels' %}" class="alert-link">Book a hotel</a>
+      </div>
+      {% endif %}
+      <div class="mt-3"><a href="{% url 'hotels' %}" class="btn btn-primary">BOOK HOTEL</a></div>
+    </div>
+
+    <div class="table-card p-4">
+      <h2 class="h4 mb-3">Packages</h2>
+      {% if packages %}
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th class="p-3">Flight Number</th>
+              <th class="p-3">Seats</th>
+              <th class="p-3">Hotel Name</th>
+              <th class="p-3">Rooms</th>
+              <th class="p-3">Date</th>
+              <th class="p-3">Cancel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for k in packages %}
+            <tr>
+              <td class="p-3 gd"><p class="mb-0">{{ k.flight }}</p></td>
+              <td class="p-3 gd"><p class="mb-0">{{ k.seat }}</p></td>
+              <td class="p-3 gd"><p class="mb-0">{{ k.hotel_name }}</p></td>
+              <td class="p-3 gd"><p class="mb-0">{{ k.room }}</p></td>
+              <td class="p-3 gd"><p class="mb-0">{{ k.date }}</p></td>
+              <td class="p-3 gd"><a class="btn btn-primary btn-sm" href="{% url 'CancelPackage' k.flight|urlencode k.seat k.hotel_name|urlencode k.date|urlencode k.room %}">CANCEL</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-info" role="alert">
+        No package bookings yet. <a href="{% url 'package' %}" class="alert-link">Book a package</a>
+      </div>
+      {% endif %}
+      <div class="mt-3"><a href="{% url 'package' %}" class="btn btn-primary">BOOK PACKAGE</a></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

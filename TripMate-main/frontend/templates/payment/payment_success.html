@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 text-center">
+            <div class="card shadow-lg">
+                <div class="card-body py-5">
+                    <div class="success-icon mb-4">
+                        <i class="fas fa-check-circle" style="font-size: 80px; color: #28a745;"></i>
+                    </div>
+                    
+                    <h2 class="mb-3">Payment Successful!</h2>
+                    <p class="text-muted mb-4">Thank you for your payment</p>
+                    
+                    <div class="alert alert-light">
+                        <p><strong>Transaction ID:</strong> {{ payment.transaction_id }}</p>
+                        <p><strong>Amount:</strong> ₹{{ payment.amount }}</p>
+                        <p><strong>Payment Method:</strong> {{ payment.get_payment_method_display }}</p>
+                        <p><strong>Date:</strong> {{ payment.payment_date|date:"M d, Y H:i" }}</p>
+                    </div>
+                    
+                    <div class="alert alert-success">
+                        <strong>Status:</strong> {{ payment.get_status_display }}
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'generate-invoice' invoice.booking_type booking_id %}" class="btn btn-outline-success btn-lg me-2">
+                            <i class="fas fa-receipt"></i> View Invoice
+                        </a>
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg me-2">
+                            <i class="fas fa-home"></i> Go to Dashboard
+                        </a>
+                        <button onclick="window.print()" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-print"></i> Print Receipt
+                        </button>
+                    </div>
+                    
+                    <p class="mt-4 text-muted">
+                        <small>A confirmation email has been sent to {{ user.email }}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .success-icon {
+        animation: scaleIn 0.5s ease-in;
+    }
+
+    .card {
+        border: none;
+        border-radius: 16px;
+    }
+
+    .alert {
+        border-radius: 12px;
+    }
+    
+    @keyframes scaleIn {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}

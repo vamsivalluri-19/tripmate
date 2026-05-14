@@ -1,0 +1,421 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.cancel-page{
+    min-height: 100vh;
+    padding-top: 50px;
+}
+
+/* HEADER */
+
+.cancel-header{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cancel-header h1{
+    font-size: 40px;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.cancel-header p{
+    color: gray;
+    font-size: 18px;
+}
+
+/* HOTEL CARD */
+
+.hotel-card{
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.hotel-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.15);
+}
+
+.hotel-image{
+    width: 100%;
+    height: 100%;
+    min-height: 350px;
+    object-fit: cover;
+}
+
+.hotel-details{
+    padding: 25px;
+}
+
+/* STATUS BADGE */
+
+.status-badge{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #dc3545;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* HOTEL NAME */
+
+.hotel-name{
+    font-size: 34px;
+    font-weight: bold;
+    color: #212529;
+}
+
+.hotel-address{
+    color: gray;
+    margin-top: 10px;
+}
+
+.hotel-price{
+    font-size: 38px;
+    color: green;
+    font-weight: bold;
+}
+
+.price-night{
+    color: gray;
+    font-size: 18px;
+}
+
+/* RATING */
+
+.hotel-rating{
+    color: #ffc107;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+/* ROOM STATUS */
+
+.room-status{
+    margin-top: 20px;
+    font-weight: bold;
+    color: #dc3545;
+    font-size: 18px;
+}
+
+/* INFO BOXES */
+
+.info-grid{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.info-card{
+    width: 30%;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.info-card h6{
+    font-weight: bold;
+}
+
+/* AMENITIES */
+
+.amenities{
+    margin-top: 20px;
+}
+
+.amenity{
+    display: inline-block;
+    background: #eef3ff;
+    color: #0d6efd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* WARNING */
+
+.warning-box{
+    background: #fff3cd;
+    border-left: 6px solid #ffc107;
+    padding: 18px;
+    border-radius: 12px;
+    margin-top: 25px;
+}
+
+.warning-box h5{
+    color: #856404;
+    font-weight: bold;
+}
+
+.warning-box p{
+    margin-bottom: 0;
+    color: #856404;
+}
+
+/* BUTTONS */
+
+.action-buttons{
+    margin-top: 30px;
+}
+
+.cancel-btn{
+    width: 100%;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.back-btn{
+    width: 100%;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .hotel-name{
+        font-size: 26px;
+    }
+
+    .hotel-price{
+        font-size: 30px;
+    }
+
+    .info-card{
+        width: 48%;
+    }
+
+    .hotel-image{
+        min-height: 250px;
+    }
+}
+
+</style>
+
+<div class="cancel-page container">
+
+    <!-- HEADER -->
+    <div class="cancel-header">
+
+        <h1>
+            🏨 Cancel Hotel Booking
+        </h1>
+
+        <p>
+            Please verify your hotel booking details before cancellation.
+        </p>
+
+    </div>
+
+    {% for i in Hotel %}
+
+    <!-- HOTEL CARD -->
+    <div class="hotel-card shadow-lg mb-5">
+
+        <!-- STATUS -->
+        <div class="status-badge">
+            Cancellation Request
+        </div>
+
+        <div class="row g-0">
+
+            <!-- IMAGE -->
+            <div class="col-md-4">
+
+                <img class="hotel-image"
+                     src="/media/{{ i.image1 }}"
+                     alt="{{ i.hotel_name }}">
+
+            </div>
+
+            <!-- DETAILS -->
+            <div class="col-md-8">
+
+                <div class="hotel-details">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                        <div>
+
+                            <div class="hotel-name">
+                                {{ i.hotel_name }}
+                            </div>
+
+                            <div class="hotel-address">
+                                📍 {{ i.hotel_address }}
+                                <br>
+                                {{ i.distfromap }} KM from nearest airport
+                            </div>
+
+                        </div>
+
+                        <div class="text-end">
+
+                            <div class="hotel-price">
+                                ₹{{ price }}
+                            </div>
+
+                            <div class="price-night">
+                                /night
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- RATING -->
+                    <div class="hotel-rating">
+
+                        {% with ''|center:i.hotel_rating as range %}
+                            {% for _ in range %}
+                                ★
+                            {% endfor %}
+                        {% endwith %}
+
+                    </div>
+
+                    <!-- ROOM INFO -->
+                    <div class="room-status">
+
+                        ✔ Booked Rooms: {{ room }}
+
+                    </div>
+
+                    <!-- INFO -->
+                    <div class="info-grid">
+
+                        <div class="info-card">
+
+                            <h6>Date</h6>
+
+                            <p>{{ date }}</p>
+
+                        </div>
+
+                        <div class="info-card">
+
+                            <h6>Status</h6>
+
+                            <p class="text-danger">
+                                Pending Cancel
+                            </p>
+
+                        </div>
+
+                        <div class="info-card">
+
+                            <h6>Refund</h6>
+
+                            <p class="text-success">
+                                Eligible
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- AMENITIES -->
+                    <div class="amenities">
+
+                        <span class="amenity">
+                            {{ i.amenities }}
+                        </span>
+
+                        <span class="amenity">
+                            Free WiFi
+                        </span>
+
+                        <span class="amenity">
+                            Parking
+                        </span>
+
+                        <span class="amenity">
+                            Restaurant
+                        </span>
+
+                        <span class="amenity">
+                            AC Rooms
+                        </span>
+
+                    </div>
+
+                    <!-- WARNING -->
+                    <div class="warning-box">
+
+                        <h5>
+                            ⚠ Important Notice
+                        </h5>
+
+                        <p>
+                            Once you cancel this booking, your reserved rooms
+                            will be released immediately and this action
+                            cannot be undone.
+                        </p>
+
+                    </div>
+
+                    <!-- BUTTONS -->
+                    <div class="row action-buttons">
+
+                        <div class="col-md-6 mb-2">
+
+                            <a href="/concanhotel/{{ i.hotel_name }}/{{ date }}/{{ room }}"
+                               class="btn btn-danger cancel-btn">
+
+                               CONFIRM CANCELLATION
+
+                            </a>
+
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+
+                            <a href="{{ request.META.HTTP_REFERER }}"
+                               class="btn btn-outline-primary back-btn">
+
+                               GO BACK
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

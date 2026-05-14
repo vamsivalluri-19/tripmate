@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-lg">
+                <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <h3 class="mb-0"><i class="fas fa-gift"></i> TripMate Loyalty Program</h3>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Points Display -->
+                    <div class="text-center mb-5">
+                        <div class="loyalty-points-display">
+                            <h1 class="text-primary" style="font-size: 60px; font-weight: bold;">
+                                {{ points }}
+                            </h1>
+                            <p class="text-muted" style="font-size: 20px;">Loyalty Points</p>
+                            <p class="mb-0" style="font-size: 16px;">Current Tier: <strong>{{ tier }}</strong></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Benefits -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <div class="benefit-card p-3 border rounded">
+                                <i class="fas fa-plane text-primary" style="font-size: 30px;"></i>
+                                <h5 class="mt-3">Flight Discounts</h5>
+                                <p class="text-muted small">Get exclusive flight discounts</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="benefit-card p-3 border rounded">
+                                <i class="fas fa-hotel text-warning" style="font-size: 30px;"></i>
+                                <h5 class="mt-3">Hotel Deals</h5>
+                                <p class="text-muted small">Special hotel booking offers</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="benefit-card p-3 border rounded">
+                                <i class="fas fa-percent text-success" style="font-size: 30px;"></i>
+                                <h5 class="mt-3">Extra Rewards</h5>
+                                <p class="text-muted small">Redeem points for rewards</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Points Summary -->
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-info-circle"></i> How Points Work</h5>
+                        <p class="mb-0">
+                            Earn <strong>10 points</strong> for every booking (Flight, Hotel, or Package).
+                            Redeem your points for exciting rewards and exclusive travel deals!
+                        </p>
+                    </div>
+                    
+                    <!-- Statistics -->
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="stat-box p-3 border rounded text-center">
+                                <h6 class="text-muted">Total Bookings</h6>
+                                <h3 class="text-primary">{{ bookings }}</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-box p-3 border rounded text-center">
+                                <h6 class="text-muted">Member Since</h6>
+                                <h3 class="text-primary">{{ profile.created_at|date:"Y" }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Rewards Tiers -->
+                    <div class="mt-5">
+                        <h5><i class="fas fa-star"></i> Rewards Tiers</h5>
+                        <div class="progress-item mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span><strong>Bronze</strong> (0-100 points)</span>
+                                <span class="badge bg-secondary">5% off</span>
+                            </div>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ bronze_progress }}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span><strong>Silver</strong> (100-250 points)</span>
+                                <span class="badge bg-info">10% off</span>
+                            </div>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: {{ silver_progress }}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span><strong>Gold</strong> (250+ points)</span>
+                                <span class="badge bg-warning">15% off</span>
+                            </div>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ gold_progress }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="mt-5 text-center">
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg me-2">
+                            <i class="fas fa-home"></i> Back to Dashboard
+                        </a>
+                        <a href="{% url 'flights' %}" class="btn btn-success btn-lg">
+                            <i class="fas fa-plane"></i> Book Now & Earn Points
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .loyalty-points-display {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .benefit-card {
+        transition: transform 0.3s ease;
+    }
+    
+    .benefit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .stat-box {
+        background: #f8f9fa;
+    }
+    
+    .progress-item {
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+    }
+</style>
+{% endblock %}

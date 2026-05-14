@@ -1,0 +1,620 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.package-page{
+    min-height: 100vh;
+    padding-top: 40px;
+}
+
+/* HEADER */
+
+.page-header{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-header h1{
+    font-size: 42px;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.page-header p{
+    color: gray;
+    font-size: 18px;
+}
+
+/* SECTION TITLES */
+
+.section-title{
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #0d6efd;
+}
+
+/* CARD COMMON */
+
+.card-custom{
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.card-custom:hover{
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.15);
+}
+
+/* BADGE */
+
+.status-badge{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #dc3545;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* FLIGHT */
+
+.flight-header{
+    background: linear-gradient(45deg,#0d6efd,#4e9eff);
+    color: white;
+    padding: 20px;
+}
+
+.airline{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.flight-no{
+    font-size: 18px;
+}
+
+.flight-price{
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.flight-body{
+    padding: 25px;
+}
+
+.route-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.airport-box{
+    text-align: center;
+}
+
+.airport-box h4{
+    font-weight: bold;
+}
+
+.flight-arrow{
+    font-size: 35px;
+    color: #0d6efd;
+}
+
+/* HOTEL */
+
+.hotel-image{
+    width: 100%;
+    height: 100%;
+    min-height: 350px;
+    object-fit: cover;
+}
+
+.hotel-details{
+    padding: 25px;
+}
+
+.hotel-name{
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.hotel-address{
+    color: gray;
+    margin-top: 10px;
+}
+
+.hotel-price{
+    font-size: 38px;
+    color: green;
+    font-weight: bold;
+}
+
+.price-night{
+    color: gray;
+}
+
+.hotel-rating{
+    color: #ffc107;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+/* INFO BOXES */
+
+.info-grid{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.info-card{
+    width: 23%;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.info-card h6{
+    font-weight: bold;
+}
+
+/* AMENITIES */
+
+.amenities{
+    margin-top: 20px;
+}
+
+.amenity{
+    display: inline-block;
+    background: #eef3ff;
+    color: #0d6efd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* WARNING */
+
+.warning-box{
+    background: #fff3cd;
+    border-left: 6px solid #ffc107;
+    padding: 18px;
+    border-radius: 12px;
+    margin-top: 30px;
+}
+
+.warning-box h5{
+    color: #856404;
+    font-weight: bold;
+}
+
+.warning-box p{
+    margin-bottom: 0;
+    color: #856404;
+}
+
+/* TOTAL */
+
+.total-box{
+    background: linear-gradient(45deg,#198754,#28a745);
+    color: white;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 35px;
+}
+
+.total-box h2{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+/* BUTTONS */
+
+.action-buttons{
+    margin-top: 35px;
+}
+
+.cancel-btn{
+    width: 100%;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.back-btn{
+    width: 100%;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .info-card{
+        width: 48%;
+    }
+
+    .route-section{
+        flex-direction: column;
+    }
+
+    .flight-arrow{
+        transform: rotate(90deg);
+        margin: 15px 0;
+    }
+
+    .hotel-image{
+        min-height: 250px;
+    }
+
+    .hotel-name{
+        font-size: 26px;
+    }
+
+    .flight-price,
+    .hotel-price{
+        font-size: 30px;
+    }
+}
+
+</style>
+
+<div class="package-page container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+
+        <h1>
+            🎒 Cancel Travel Package
+        </h1>
+
+        <p>
+            Review your flight and hotel booking details before cancellation.
+        </p>
+
+    </div>
+
+    <!-- FLIGHT SECTION -->
+    <h2 class="section-title">
+        ✈ Flight Booking
+    </h2>
+
+    {% for i in Flight %}
+
+    <div class="card-custom shadow-lg mb-5">
+
+        <div class="status-badge">
+            Package Booking
+        </div>
+
+        <!-- FLIGHT HEADER -->
+        <div class="flight-header">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <div class="airline">
+                        {{ i.company }}
+                    </div>
+
+                    <div class="flight-no">
+                        Flight No: {{ i.flight_num }}
+                    </div>
+
+                </div>
+
+                <div class="flight-price">
+                    ₹{{ pricef }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FLIGHT BODY -->
+        <div class="flight-body">
+
+            <div class="route-section">
+
+                <div class="airport-box">
+
+                    <h4>{{ i.source }}</h4>
+
+                    <p>Departure</p>
+
+                    <strong>{{ i.dept_time }}</strong>
+
+                </div>
+
+                <div class="flight-arrow">
+                    ✈
+                </div>
+
+                <div class="airport-box">
+
+                    <h4>{{ i.destination }}</h4>
+
+                    <p>Arrival</p>
+
+                    <strong>{{ i.dest_time }}</strong>
+
+                </div>
+
+            </div>
+
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <h6>Date</h6>
+
+                    <p>{{ date }}</p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Seats</h6>
+
+                    <p>{{ seat }}</p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Status</h6>
+
+                    <p class="text-danger">
+                        Pending Cancel
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Refund</h6>
+
+                    <p class="text-success">
+                        Eligible
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    <!-- HOTEL SECTION -->
+    <h2 class="section-title">
+        🏨 Hotel Booking
+    </h2>
+
+    {% for j in Hotel %}
+
+    <div class="card-custom shadow-lg mb-5">
+
+        <div class="row g-0">
+
+            <!-- IMAGE -->
+            <div class="col-md-4">
+
+                <img class="hotel-image"
+                     src="/media/{{ j.image1 }}"
+                     alt="{{ j.hotel_name }}">
+
+            </div>
+
+            <!-- DETAILS -->
+            <div class="col-md-8">
+
+                <div class="hotel-details">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                        <div>
+
+                            <div class="hotel-name">
+                                {{ j.hotel_name }}
+                            </div>
+
+                            <div class="hotel-address">
+                                📍 {{ j.hotel_address }}
+                                <br>
+                                {{ j.distfromap }} KM from nearest airport
+                            </div>
+
+                        </div>
+
+                        <div class="text-end">
+
+                            <div class="hotel-price">
+                                ₹{{ priceh }}
+                            </div>
+
+                            <div class="price-night">
+                                /night
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- RATING -->
+                    <div class="hotel-rating">
+
+                        {% with ''|center:j.hotel_rating as range %}
+                            {% for _ in range %}
+                                ★
+                            {% endfor %}
+                        {% endwith %}
+
+                    </div>
+
+                    <!-- INFO -->
+                    <div class="info-grid">
+
+                        <div class="info-card">
+
+                            <h6>Rooms</h6>
+
+                            <p>{{ room }}</p>
+
+                        </div>
+
+                        <div class="info-card">
+
+                            <h6>Date</h6>
+
+                            <p>{{ date }}</p>
+
+                        </div>
+
+                        <div class="info-card">
+
+                            <h6>Status</h6>
+
+                            <p class="text-danger">
+                                Pending Cancel
+                            </p>
+
+                        </div>
+
+                        <div class="info-card">
+
+                            <h6>Refund</h6>
+
+                            <p class="text-success">
+                                Eligible
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- AMENITIES -->
+                    <div class="amenities">
+
+                        <span class="amenity">
+                            {{ j.amenities }}
+                        </span>
+
+                        <span class="amenity">
+                            Free WiFi
+                        </span>
+
+                        <span class="amenity">
+                            Restaurant
+                        </span>
+
+                        <span class="amenity">
+                            Parking
+                        </span>
+
+                        <span class="amenity">
+                            AC Rooms
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    <!-- WARNING -->
+    <div class="warning-box">
+
+        <h5>
+            ⚠ Important Notice
+        </h5>
+
+        <p>
+            Cancelling this package will cancel both your flight
+            and hotel booking together. This action cannot be undone.
+        </p>
+
+    </div>
+
+    <!-- TOTAL -->
+    <div class="total-box">
+
+        <p>Total Package Amount</p>
+
+        <h2>
+            ₹{{ pricef|add:priceh }}
+        </h2>
+
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="row action-buttons mb-5">
+
+        <div class="col-md-6 mb-2">
+
+            {% for i in Flight %}
+            {% for j in Hotel %}
+
+            <a href="/concanpackage/{{i.flight_num}}/{{ seat }}/{{ j.hotel_name }}/{{ date }}/{{ room }}"
+               class="btn btn-danger cancel-btn">
+
+               CONFIRM PACKAGE CANCELLATION
+
+            </a>
+
+            {% endfor %}
+            {% endfor %}
+
+        </div>
+
+        <div class="col-md-6 mb-2">
+
+            <a href="{{ request.META.HTTP_REFERER }}"
+               class="btn btn-outline-primary back-btn">
+
+               GO BACK
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

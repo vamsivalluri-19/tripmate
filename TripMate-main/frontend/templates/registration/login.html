@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-shell">
+  <div class="container">
+    <div class="auth-card">
+      <div class="text-uppercase text-muted mb-2">Welcome back</div>
+      <h1 class="pt mb-4">LOGIN</h1>
+      <form class="form-group" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary btn-block mt-3">L O G I N</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

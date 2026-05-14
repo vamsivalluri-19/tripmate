@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="main section-shell">
+  <div class="container">
+    <div class="hero-card mb-4">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <div class="text-uppercase text-muted mb-2">Smart travel, simple booking</div>
+          <h1 class="display-4 font-weight-bold mb-3 title">TRAVEL TRIP</h1>
+          <p class="lead text-muted mb-4">Plan flights, hotels, and full packages from one clean dashboard. Search faster, compare better, and keep everything in one place.</p>
+          <div class="d-flex flex-wrap">
+            <a href="{% url 'package' %}" class="btn btn-primary mr-2 mb-2">Browse Packages</a>
+            <a href="{% url 'flights' %}" class="btn btn-outline-light mr-2 mb-2">Find Flights</a>
+            <a href="{% url 'hotels' %}" class="btn btn-outline-light mr-2 mb-2">Check Hotels</a>
+          </div>
+        </div>
+        <div class="col-lg-5 text-center mt-4 mt-lg-0">
+          <img src="{% static 'img/travel.png' %}" class="img-fluid" alt="Travel illustration">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-lg-3 mb-4">
+        <a href="{% url 'package' %}" class="text-reset text-decoration-none">
+          <div class="feature feature-card h-100">
+            <ion-icon name="pricetags-sharp"></ion-icon>
+            <h5>PACKAGES</h5>
+            <p>Curated trips with flight and hotel combinations for simpler planning.</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <a href="{% url 'flights' %}" class="text-reset text-decoration-none">
+          <div class="feature feature-card h-100">
+            <ion-icon name="airplane-sharp"></ion-icon>
+            <h5>FLIGHTS</h5>
+            <p>Search available flights and jump directly into booking from the results page.</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <a href="{% url 'hotels' %}" class="text-reset text-decoration-none">
+          <div class="feature feature-card h-100">
+            <ion-icon name="bed-sharp"></ion-icon>
+            <h5>HOTELS</h5>
+            <p>Compare hotel stays with price, rating, amenities, and availability in one view.</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <a href="{% url 'places' %}" class="text-reset text-decoration-none">
+          <div class="feature feature-card h-100">
+            <ion-icon name="chatbox-ellipses-sharp"></ion-icon>
+            <h5>PLACES</h5>
+            <p>Discover weekend getaways and popular spots to build better itineraries.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-card mt-2">
+      <div class="row text-center">
+        <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
+          <div class="small text-muted text-uppercase">Fast Search</div>
+          <div class="h4 mb-0">Flights</div>
+        </div>
+        <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
+          <div class="small text-muted text-uppercase">Live Choices</div>
+          <div class="h4 mb-0">Hotels</div>
+        </div>
+        <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
+          <div class="small text-muted text-uppercase">Combined Trips</div>
+          <div class="h4 mb-0">Packages</div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="small text-muted text-uppercase">Saved Bookings</div>
+          <div class="h4 mb-0">Dashboard</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

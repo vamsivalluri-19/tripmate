@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="page-shell">
+  <div class="container">
+    <div class="hero-card mb-4">
+      <div class="text-uppercase text-muted mb-2">Cancellation review</div>
+      <h1 class="h2 mb-0">Cancel this package booking?</h1>
+    </div>
+
+    {% for i in Flight %}
+    <div class="ticket result-card p-4 mb-4">
+      <div class="row bg1 p-3 align-items-center">
+        <div class="col-md-8 d-flex align-items-center">
+          <h3 class="mb-0 mr-2">{{ i.company }}</h3><h4 class="mb-0">{{i.flight_num}}</h4>
+        </div>
+        <div class="col-md-4 text-md-right text-white">Seats: {{seat}}</div>
+      </div>
+      <div class="row bg-light p-4 align-items-center">
+        <div class="col-md-3"><p class="from">FROM:<br>{{ i.source }}</p></div>
+        <div class="col-md-3"><p class="to">TO:<br>{{i.destination}}</p></div>
+        <div class="col-md-3"><p class="dept">DEPT TIME:<br>{{ i.dept_time}}</p></div>
+        <div class="col-md-3 text-md-right"><p class="eprice mb-0">{{pricef}}*</p></div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-warning" role="alert">
+      <strong>No flight found.</strong> The booking may have already been cancelled.
+    </div>
+    {% endfor %}
+
+    {% for j in Hotel %}
+    <div class="hotel mb-4">
+      <div class="container">
+        <div class="row result-card p-3 align-items-stretch">
+          <div class="col-md-4 mb-3 mb-md-0">
+            {% if j.image1 %}
+            <img class="h-img shadow-sm" src="{{ j.image1.url }}" alt="{{ j.hotel_name }}">
+            {% else %}
+            <img class="h-img shadow-sm" src="{% static 'img/hotel1.png' %}" alt="{{ j.hotel_name }}">
+            {% endif %}
+          </div>
+          <div class="col-md-8 d-flex flex-column justify-content-between">
+            <div>
+              <p class="roomrem">Booked Rooms: {{ room }}</p>
+              <p class="h-name">{{j.hotel_name}}</p>
+              <p class="h-add">{{j.hotel_address}}.<br>{{ j.distfromap }} KM from nearest airport.</p>
+            </div>
+            <div class="d-flex flex-wrap align-items-end justify-content-between">
+              <div>
+                <p class="h-price mb-0">{{ priceh }}*</p>
+                <p class="h-pricex mb-0">/night</p>
+              </div>
+              <div class="text-right h-am">
+                {{ j.amenities }}
+                <div class="h-rate">
+                {% with ''|center:j.hotel_rating as range %}
+                  {% for _ in range %}
+                      ★
+                  {% endfor %}
+                {% endwith %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-warning" role="alert">
+      <strong>No hotel found.</strong> The booking may have already been cancelled.
+    </div>
+    {% endfor %}
+
+    {% for i in Flight %}
+    {% for j in Hotel %}
+    <a href="/concanpackage/{{i.flight_num}}/{{ seat }}/{{ j.hotel_name }}/{{ date }}/{{ room }}" class="btn btn-primary">CANCEL</a>
+    {% endfor %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

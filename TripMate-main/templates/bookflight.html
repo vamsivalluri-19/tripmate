@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .main{
+    min-height: 100vh;
+  }
+
+  .search-box{
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 30px;
+  }
+
+  .title{
+    text-align: center;
+    font-weight: bold;
+    color: #0d6efd;
+    margin-bottom: 25px;
+  }
+
+  .ticket{
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    background: white;
+    position: relative;
+  }
+
+  .ticket:hover{
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .ticket-header{
+    padding: 15px;
+    color: white;
+  }
+
+  .available{
+    background: linear-gradient(45deg,#0d6efd,#4e9eff);
+  }
+
+  .unavailable{
+    background: linear-gradient(45deg,#dc3545,#ff6b6b);
+  }
+
+  .ticket-body{
+    padding: 20px;
+  }
+
+  .flight-route{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .airport{
+    text-align: center;
+  }
+
+  .airport h5{
+    font-weight: bold;
+  }
+
+  .arrow{
+    font-size: 30px;
+    color: #0d6efd;
+  }
+
+  .details{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .detail-card{
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 12px;
+    width: 23%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .price{
+    font-size: 28px;
+    color: green;
+    font-weight: bold;
+  }
+
+  .book-btn{
+    width: 100%;
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 10px;
+  }
+
+  .status-badge{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 14px;
+    padding: 7px 15px;
+    border-radius: 30px;
+  }
+
+  .available-badge{
+    background: #198754;
+    color: white;
+  }
+
+  .unavailable-badge{
+    background: #dc3545;
+    color: white;
+  }
+
+  .no-flight{
+    text-align: center;
+    margin-top: 50px;
+    color: gray;
+  }
+
+  @media(max-width:768px){
+
+    .detail-card{
+      width: 48%;
+    }
+
+    .flight-route{
+      flex-direction: column;
+    }
+
+    .arrow{
+      transform: rotate(90deg);
+      margin: 10px 0;
+    }
+  }
+
+</style>
+
+<div class="main container">
+
+  <!-- SEARCH FORM -->
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="search-box shadow-lg">
+        <h2 class="title">✈ Flight Search</h2>
+
+        <form class="form-group" action="" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+
+          <div class="text-center">
+            <button class="btn btn-primary px-5">
+              SEARCH FLIGHTS
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <br><br>
+
+  <!-- FLIGHT LIST -->
+  {% for i in flight %}
+
+  <div class="container mb-4">
+
+    <div class="ticket shadow-lg">
+
+      <!-- STATUS BADGE -->
+      {% if availability == "available" %}
+      <span class="status-badge available-badge">
+        Seats Available
+      </span>
+      {% else %}
+      <span class="status-badge unavailable-badge">
+        Fully Booked
+      </span>
+      {% endif %}
+
+      <!-- HEADER -->
+      <div class="ticket-header {% if availability == 'available' %}available{% else %}unavailable{% endif %}">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h3>{{ i.company }}</h3>
+            <h5>Flight No: {{ i.flight_num }}</h5>
+          </div>
+
+          <div class="text-end">
+            <h4 class="price">₹{{ price }}</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="ticket-body">
+
+        <!-- ROUTE -->
+        <div class="flight-route">
+
+          <div class="airport">
+            <h5>{{ i.source }}</h5>
+            <p>Departure</p>
+            <strong>{{ i.dept_time }}</strong>
+          </div>
+
+          <div class="arrow">
+            ✈
+          </div>
+
+          <div class="airport">
+            <h5>{{ i.destination }}</h5>
+            <p>Arrival</p>
+            <strong>{{ i.dest_time }}</strong>
+          </div>
+
+        </div>
+
+        <!-- DETAILS -->
+        <div class="details">
+
+          <div class="detail-card">
+            <h6>Date</h6>
+            <p>{{ date }}</p>
+          </div>
+
+          <div class="detail-card">
+            <h6>Seats Left</h6>
+            <p>{{ seatrem }}</p>
+          </div>
+
+          <div class="detail-card">
+            <h6>Passengers</h6>
+            <p>{{ seatsreq }}</p>
+          </div>
+
+          <div class="detail-card">
+            <h6>Status</h6>
+
+            {% if availability == "available" %}
+              <p class="text-success">Available</p>
+            {% else %}
+              <p class="text-danger">Unavailable</p>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <br>
+
+        <!-- BUTTONS -->
+        <div class="d-flex gap-2">
+
+          {% if availability == "available" %}
+          <a href="/userflight/{{ i.flight_num }}/{{ date }}/{{ seatsreq }}"
+             class="btn btn-success book-btn">
+             BOOK NOW
+          </a>
+          {% else %}
+          <button class="btn btn-danger book-btn" disabled>
+            FULLY BOOKED
+          </button>
+          {% endif %}
+
+          <button class="btn btn-outline-primary book-btn">
+            VIEW DETAILS
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  {% empty %}
+
+  <!-- NO FLIGHTS -->
+  <div class="no-flight">
+    <img src="{% static 'img/plane.png' %}" width="250">
+    <h3>No Flights Found</h3>
+    <p>Try searching with different locations or dates.</p>
+  </div>
+
+  {% endfor %}
+
+  <!-- BACK BUTTON -->
+  <div class="text-center mt-5 mb-5">
+    <a href="{{ request.META.HTTP_REFERER }}"
+       class="btn btn-primary px-5">
+       ← Go Back
+    </a>
+  </div>
+
+</div>
+
+{% endblock %}

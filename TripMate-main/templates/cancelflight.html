@@ -1,0 +1,373 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.cancel-page{
+    min-height: 100vh;
+    padding-top: 50px;
+}
+
+/* HEADER */
+
+.cancel-header{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cancel-header h1{
+    font-weight: bold;
+    color: #dc3545;
+    font-size: 40px;
+}
+
+.cancel-header p{
+    color: gray;
+    font-size: 18px;
+}
+
+/* CARD */
+
+.flight-card{
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.flight-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.15);
+}
+
+.flight-header{
+    background: linear-gradient(45deg,#dc3545,#ff6b6b);
+    color: white;
+    padding: 20px;
+}
+
+.airline{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.flight-no{
+    font-size: 18px;
+}
+
+.price{
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.flight-body{
+    padding: 25px;
+}
+
+/* ROUTE */
+
+.route-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.airport-box{
+    text-align: center;
+}
+
+.airport-box h4{
+    font-weight: bold;
+}
+
+.flight-arrow{
+    font-size: 35px;
+    color: #0d6efd;
+}
+
+/* INFO */
+
+.info-grid{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.info-card{
+    width: 23%;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.info-card h6{
+    font-weight: bold;
+}
+
+/* WARNING */
+
+.warning-box{
+    background: #fff3cd;
+    border-left: 6px solid #ffc107;
+    padding: 18px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+.warning-box h5{
+    color: #856404;
+    font-weight: bold;
+}
+
+.warning-box p{
+    margin-bottom: 0;
+    color: #856404;
+}
+
+/* BUTTONS */
+
+.action-buttons{
+    margin-top: 30px;
+}
+
+.cancel-btn{
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.back-btn{
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* STATUS BADGE */
+
+.status-badge{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: white;
+    color: #dc3545;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .info-card{
+        width: 48%;
+    }
+
+    .route-section{
+        flex-direction: column;
+    }
+
+    .flight-arrow{
+        transform: rotate(90deg);
+        margin: 15px 0;
+    }
+
+    .airline{
+        font-size: 24px;
+    }
+
+    .price{
+        font-size: 28px;
+    }
+}
+
+</style>
+
+<div class="cancel-page container">
+
+    <!-- HEADER -->
+    <div class="cancel-header">
+
+        <h1>
+            ✈ Cancel Flight Booking
+        </h1>
+
+        <p>
+            Please review your booking details before cancellation.
+        </p>
+
+    </div>
+
+    {% for i in Flight %}
+
+    <!-- FLIGHT CARD -->
+    <div class="flight-card shadow-lg mb-5">
+
+        <!-- STATUS -->
+        <div class="status-badge">
+            Cancellation Request
+        </div>
+
+        <!-- HEADER -->
+        <div class="flight-header">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <div class="airline">
+                        {{ i.company }}
+                    </div>
+
+                    <div class="flight-no">
+                        Flight No: {{ i.flight_num }}
+                    </div>
+
+                </div>
+
+                <div class="price">
+                    ₹{{ price }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="flight-body">
+
+            <!-- ROUTE -->
+            <div class="route-section">
+
+                <div class="airport-box">
+
+                    <h4>{{ i.source }}</h4>
+
+                    <p>Departure</p>
+
+                    <strong>{{ i.dept_time }}</strong>
+
+                </div>
+
+                <div class="flight-arrow">
+                    ✈
+                </div>
+
+                <div class="airport-box">
+
+                    <h4>{{ i.destination }}</h4>
+
+                    <p>Arrival</p>
+
+                    <strong>{{ i.dest_time }}</strong>
+
+                </div>
+
+            </div>
+
+            <!-- INFO -->
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <h6>Date</h6>
+
+                    <p>{{ date }}</p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Seats</h6>
+
+                    <p>{{ seat }}</p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Status</h6>
+
+                    <p class="text-danger">
+                        Pending Cancel
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Refund</h6>
+
+                    <p class="text-success">
+                        Eligible
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- WARNING -->
+            <div class="warning-box">
+
+                <h5>
+                    ⚠ Important Notice
+                </h5>
+
+                <p>
+                    Once you cancel this booking, the seats will be released
+                    and this action cannot be undone.
+                </p>
+
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="row action-buttons">
+
+                <div class="col-md-6 mb-2">
+
+                    <a href="/concanflight/{{ i.flight_num }}/{{ date }}/{{ seat }}"
+                       class="btn btn-danger cancel-btn">
+
+                        CONFIRM CANCELLATION
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-6 mb-2">
+
+                    <a href="{{ request.META.HTTP_REFERER }}"
+                       class="btn btn-outline-primary back-btn">
+
+                        GO BACK
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

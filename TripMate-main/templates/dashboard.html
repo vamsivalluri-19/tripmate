@@ -1,0 +1,541 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.dashboard{
+    padding: 40px 0;
+}
+
+/* SECTION */
+
+.booking-section{
+    margin-bottom: 60px;
+}
+
+.section-card{
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+    transition: 0.3s ease;
+}
+
+.section-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.12);
+}
+
+/* TITLES */
+
+.section-title{
+    font-size: 35px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.section-subtitle{
+    color: gray;
+    margin-bottom: 30px;
+}
+
+/* COLORS */
+
+.flight-title{
+    color: #0d6efd;
+}
+
+.hotel-title{
+    color: #dc3545;
+}
+
+.package-title{
+    color: #198754;
+}
+
+/* TABLE */
+
+.table{
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.table thead th{
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 18px;
+}
+
+.flight-head{
+    background: linear-gradient(45deg,#0d6efd,#4e9eff);
+}
+
+.hotel-head{
+    background: linear-gradient(45deg,#dc3545,#ff6b6b);
+}
+
+.package-head{
+    background: linear-gradient(45deg,#198754,#28a745);
+}
+
+.table tbody td{
+    text-align: center;
+    vertical-align: middle;
+    padding: 18px;
+}
+
+/* STATUS */
+
+.status{
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.confirmed{
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+/* BUTTONS */
+
+.cancel-btn{
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-weight: bold;
+}
+
+.book-btn{
+    border-radius: 12px;
+    padding: 12px 25px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* EMPTY */
+
+.empty-box{
+    text-align: center;
+    padding: 40px;
+    color: gray;
+}
+
+.empty-box img{
+    width: 180px;
+    margin-bottom: 15px;
+}
+
+/* CARDS */
+
+.stats-row{
+    margin-bottom: 40px;
+}
+
+.stat-card{
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.stat-card:hover{
+    transform: scale(1.03);
+}
+
+.stat-card h2{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.stat-card p{
+    color: gray;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .section-title{
+        font-size: 28px;
+    }
+
+    .table{
+        font-size: 13px;
+    }
+
+    .book-btn{
+        width: 100%;
+    }
+}
+
+</style>
+
+<div class="dashboard container">
+
+    <!-- STATS -->
+    <div class="row stats-row">
+
+        <div class="col-md-4 mb-3">
+
+            <div class="stat-card shadow-lg">
+
+                <h2 class="text-primary">
+                    {{ flights|length }}
+                </h2>
+
+                <p>Total Flights</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <div class="stat-card shadow-lg">
+
+                <h2 class="text-danger">
+                    {{ hotels|length }}
+                </h2>
+
+                <p>Total Hotels</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <div class="stat-card shadow-lg">
+
+                <h2 class="text-success">
+                    {{ packages|length }}
+                </h2>
+
+                <p>Total Packages</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FLIGHTS -->
+    <div class="booking-section">
+
+        <div class="section-card shadow-lg">
+
+            <h2 class="section-title flight-title">
+                ✈ Flight Bookings
+            </h2>
+
+            <p class="section-subtitle">
+                Manage all your flight reservations here.
+            </p>
+
+            {% if flights %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead class="flight-head">
+
+                        <tr>
+
+                            <th>Flight Number</th>
+                            <th>Date</th>
+                            <th>Seats</th>
+                            <th>Status</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for i in flights %}
+
+                        <tr>
+
+                            <td>{{ i.flight }}</td>
+
+                            <td>{{ i.date }}</td>
+
+                            <td>{{ i.seat }}</td>
+
+                            <td>
+
+                                <span class="status confirmed">
+                                    Confirmed
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <a class="btn btn-danger cancel-btn"
+                                   href="{% url 'CancelFlight' i.flight|urlencode i.date|urlencode i.seat %}">
+
+                                   CANCEL
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-box">
+
+                <img src="{% static 'img/plane.png' %}">
+
+                <h4>No Flight Bookings</h4>
+
+            </div>
+
+            {% endif %}
+
+            <center>
+
+                <a href="{% url 'flights' %}"
+                   class="btn btn-primary book-btn">
+
+                   BOOK FLIGHT
+
+                </a>
+
+            </center>
+
+        </div>
+
+    </div>
+
+    <!-- HOTELS -->
+    <div class="booking-section">
+
+        <div class="section-card shadow-lg">
+
+            <h2 class="section-title hotel-title">
+                🏨 Hotel Bookings
+            </h2>
+
+            <p class="section-subtitle">
+                View and manage your hotel reservations.
+            </p>
+
+            {% if hotels %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead class="hotel-head">
+
+                        <tr>
+
+                            <th>Hotel Name</th>
+                            <th>Date</th>
+                            <th>Rooms</th>
+                            <th>Status</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for j in hotels %}
+
+                        <tr>
+
+                            <td>{{ j.hotel_name }}</td>
+
+                            <td>{{ j.date }}</td>
+
+                            <td>{{ j.room }}</td>
+
+                            <td>
+
+                                <span class="status confirmed">
+                                    Confirmed
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <a class="btn btn-danger cancel-btn"
+                                   href="{% url 'CancelHotel' j.hotel_name|urlencode j.date|urlencode j.room %}">
+
+                                   CANCEL
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-box">
+
+                <img src="{% static 'img/hotel1.png' %}">
+
+                <h4>No Hotel Bookings</h4>
+
+            </div>
+
+            {% endif %}
+
+            <center>
+
+                <a href="{% url 'hotels' %}"
+                   class="btn btn-danger book-btn">
+
+                   BOOK HOTEL
+
+                </a>
+
+            </center>
+
+        </div>
+
+    </div>
+
+    <!-- PACKAGES -->
+    <div class="booking-section">
+
+        <div class="section-card shadow-lg">
+
+            <h2 class="section-title package-title">
+                🎒 Package Bookings
+            </h2>
+
+            <p class="section-subtitle">
+                Manage your complete travel packages.
+            </p>
+
+            {% if packages %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead class="package-head">
+
+                        <tr>
+
+                            <th>Flight</th>
+                            <th>Seats</th>
+                            <th>Hotel</th>
+                            <th>Rooms</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for k in packages %}
+
+                        <tr>
+
+                            <td>{{ k.flight }}</td>
+
+                            <td>{{ k.seat }}</td>
+
+                            <td>{{ k.hotel_name }}</td>
+
+                            <td>{{ k.room }}</td>
+
+                            <td>{{ k.date }}</td>
+
+                            <td>
+
+                                <span class="status confirmed">
+                                    Confirmed
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <a class="btn btn-danger cancel-btn"
+                                   href="{% url 'CancelPackage' k.flight|urlencode k.seat k.hotel_name|urlencode k.date|urlencode k.room %}">
+
+                                   CANCEL
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-box">
+
+                <img src="{% static 'img/cloud.png' %}">
+
+                <h4>No Package Bookings</h4>
+
+            </div>
+
+            {% endif %}
+
+            <center>
+
+                <a href="{% url 'package' %}"
+                   class="btn btn-success book-btn">
+
+                   BOOK PACKAGE
+
+                </a>
+
+            </center>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

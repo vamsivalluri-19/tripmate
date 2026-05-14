@@ -1,0 +1,463 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fb;
+    overflow-x: hidden;
+}
+
+/* HERO SECTION */
+
+.hero{
+    min-height: 100vh;
+    background: linear-gradient(135deg,#0d6efd,#4e9eff);
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 80px;
+}
+
+/* CIRCLES */
+
+.circle1{
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    top: -100px;
+    left: -120px;
+}
+
+.circle2{
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    bottom: -100px;
+    right: -80px;
+}
+
+/* NAV */
+
+.top-section{
+    padding-top: 40px;
+    text-align: center;
+}
+
+.logo{
+    width: 110px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+
+    0%{
+        transform: translateY(0px);
+    }
+
+    50%{
+        transform: translateY(-10px);
+    }
+
+    100%{
+        transform: translateY(0px);
+    }
+}
+
+.main-title{
+    color: white;
+    font-size: 60px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.sub-title{
+    color: rgba(255,255,255,0.9);
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+/* FEATURES */
+
+.features-section{
+    margin-top: 70px;
+}
+
+.feature-card{
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+    text-align: center;
+    transition: 0.3s ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0px 15px 30px rgba(0,0,0,0.15);
+}
+
+.feature-card::before{
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: rgba(13,110,253,0.08);
+    border-radius: 50%;
+    top: -40px;
+    right: -40px;
+}
+
+.feature-icon{
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+
+.feature-title{
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.feature-text{
+    color: gray;
+    font-size: 16px;
+}
+
+/* COLORS */
+
+.package-color{
+    color: #ff9800;
+}
+
+.flight-color{
+    color: #0d6efd;
+}
+
+.hotel-color{
+    color: #dc3545;
+}
+
+.place-color{
+    color: #198754;
+}
+
+/* BUTTON */
+
+.feature-btn{
+    border-radius: 12px;
+    padding: 12px 25px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* TRAVEL IMAGE */
+
+.travel-image{
+    width: 100%;
+    max-width: 650px;
+    margin-top: 60px;
+    animation: move 4s ease-in-out infinite;
+}
+
+@keyframes move{
+
+    0%{
+        transform: translateY(0px);
+    }
+
+    50%{
+        transform: translateY(-15px);
+    }
+
+    100%{
+        transform: translateY(0px);
+    }
+}
+
+/* STATS */
+
+.stats{
+    margin-top: 80px;
+}
+
+.stat-card{
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    color: white;
+}
+
+.stat-card h2{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .main-title{
+        font-size: 38px;
+    }
+
+    .sub-title{
+        font-size: 17px;
+    }
+
+    .feature-title{
+        font-size: 24px;
+    }
+
+    .travel-image{
+        margin-top: 40px;
+    }
+}
+
+</style>
+
+<div class="hero">
+
+    <!-- BACKGROUND SHAPES -->
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+
+    <div class="container">
+
+        <!-- TOP -->
+        <div class="top-section">
+
+            <img class="logo"
+                 src="{% static 'img/logo.png' %}"
+                 alt="logo">
+
+            <h1 class="main-title">
+                ✈ TRAVEL TRIP
+            </h1>
+
+            <p class="sub-title">
+                Discover amazing destinations, luxury hotels,
+                and affordable flights for your dream vacation.
+            </p>
+
+        </div>
+
+        <!-- FEATURES -->
+        <div class="features-section">
+
+            <div class="row g-4">
+
+                <!-- PACKAGE -->
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="feature-card shadow-lg">
+
+                        <div class="feature-icon package-color">
+
+                            <ion-icon name="pricetags-sharp"></ion-icon>
+
+                        </div>
+
+                        <div class="feature-title">
+
+                            Packages
+
+                        </div>
+
+                        <div class="feature-text">
+
+                            Customized travel packages
+                            with flights, hotels, and tours.
+
+                        </div>
+
+                        <a href="{% url 'package' %}"
+                           class="btn btn-warning feature-btn">
+
+                           Explore
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- FLIGHTS -->
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="feature-card shadow-lg">
+
+                        <div class="feature-icon flight-color">
+
+                            <ion-icon name="airplane-sharp"></ion-icon>
+
+                        </div>
+
+                        <div class="feature-title">
+
+                            Flights
+
+                        </div>
+
+                        <div class="feature-text">
+
+                            Get exciting flight deals
+                            and book tickets instantly.
+
+                        </div>
+
+                        <a href="{% url 'flights' %}"
+                           class="btn btn-primary feature-btn">
+
+                           Book Flight
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- HOTELS -->
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="feature-card shadow-lg">
+
+                        <div class="feature-icon hotel-color">
+
+                            <ion-icon name="bed-sharp"></ion-icon>
+
+                        </div>
+
+                        <div class="feature-title">
+
+                            Hotels
+
+                        </div>
+
+                        <div class="feature-text">
+
+                            Luxury hotels and budget stays
+                            at the best prices.
+
+                        </div>
+
+                        <a href="{% url 'hotels' %}"
+                           class="btn btn-danger feature-btn">
+
+                           Book Hotel
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- PLACES -->
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="feature-card shadow-lg">
+
+                        <div class="feature-icon place-color">
+
+                            <ion-icon name="location-sharp"></ion-icon>
+
+                        </div>
+
+                        <div class="feature-title">
+
+                            Places
+
+                        </div>
+
+                        <div class="feature-text">
+
+                            Explore famous tourist places
+                            and weekend getaways.
+
+                        </div>
+
+                        <a href="{% url 'places' %}"
+                           class="btn btn-success feature-btn">
+
+                           Discover
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- IMAGE -->
+        <div class="text-center">
+
+            <img src="{% static 'img/travel.png' %}"
+                 class="travel-image"
+                 alt="travel">
+
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+
+                    <div class="stat-card">
+
+                        <h2>500+</h2>
+
+                        <p>Happy Travelers</p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="stat-card">
+
+                        <h2>150+</h2>
+
+                        <p>Destinations</p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="stat-card">
+
+                        <h2>24/7</h2>
+
+                        <p>Customer Support</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

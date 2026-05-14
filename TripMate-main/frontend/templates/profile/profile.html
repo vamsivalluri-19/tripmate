@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user"></i> User Profile
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4">
+                                {% if profile.profile_pic %}
+                                    <img src="{{ profile.profile_pic.url }}" alt="Profile" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/150" alt="Profile" class="img-fluid rounded-circle">
+                                {% endif %}
+                                <div class="mt-3">
+                                    {{ form.profile_pic }}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="form-group mb-3">
+                                    <label><strong>Username:</strong></label>
+                                    <input type="text" class="form-control" value="{{ user.username }}" disabled>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label><strong>Email:</strong></label>
+                                    <input type="email" class="form-control" value="{{ user.email }}" disabled>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label><strong>Full Name:</strong></label>
+                                    <input type="text" class="form-control" value="{{ user.first_name }} {{ user.last_name }}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="form-group mb-3">
+                            <label for="id_phone"><strong>Phone Number:</strong></label>
+                            {{ form.phone }}
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="id_address"><strong>Address:</strong></label>
+                            {{ form.address }}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="id_city"><strong>City:</strong></label>
+                                    {{ form.city }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="id_country"><strong>Country:</strong></label>
+                                    {{ form.country }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="id_bio"><strong>Bio:</strong></label>
+                            {{ form.bio }}
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <strong><i class="fas fa-gift"></i> Loyalty Points:</strong> {{ profile.loyalty_points }} points
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    
+    .card {
+        border-radius: 10px;
+        border: none;
+    }
+    
+    .btn-primary {
+        background-color: #0066cc;
+        border: none;
+        border-radius: 5px;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0052a3;
+    }
+</style>
+{% endblock %}

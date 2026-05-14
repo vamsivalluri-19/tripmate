@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="page-shell">
+  <div class="container">
+    <div class="hero-card mb-4">
+      <div class="text-uppercase text-muted mb-2">Cancellation review</div>
+      <h1 class="h2 mb-0">Cancel this hotel booking?</h1>
+    </div>
+
+    {% for i in Hotel %}
+    <div class="hotel mb-4">
+      <div class="container">
+        <div class="row result-card p-3 align-items-stretch">
+          <div class="col-md-4 mb-3 mb-md-0">
+            {% if i.image1 %}
+            <img class="h-img shadow-sm" src="{{ i.image1.url }}" alt="{{ i.hotel_name }}">
+            {% else %}
+            <img class="h-img shadow-sm" src="{% static 'img/hotel1.png' %}" alt="{{ i.hotel_name }}">
+            {% endif %}
+          </div>
+          <div class="col-md-8 d-flex flex-column justify-content-between">
+            <div>
+              <p class="roomrem">Booked Rooms: {{ room }}</p>
+              <p class="h-name">{{i.hotel_name}}</p>
+              <p class="h-add">{{i.hotel_address}}.<br>{{ i.distfromap }} KM from nearest airport.</p>
+            </div>
+            <div class="d-flex flex-wrap align-items-end justify-content-between">
+              <div>
+                <p class="h-price mb-0">{{ price }}*</p>
+                <p class="h-pricex mb-0">/night</p>
+              </div>
+              <div class="text-right h-am">
+                {{ i.amenities }}
+                <div class="h-rate">
+                {% with ''|center:i.hotel_rating as range %}
+                  {% for _ in range %}
+                      ★
+                  {% endfor %}
+                {% endwith %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="/concanhotel/{{ i.hotel_name }}/{{ date }}/{{ room }}" class="btn btn-primary">CANCEL</a>
+    {% empty %}
+    <div class="alert alert-warning" role="alert">
+      <strong>No hotel found.</strong> The booking may have already been cancelled.
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

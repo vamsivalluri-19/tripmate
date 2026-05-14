@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4"><i class="fas fa-history"></i> Booking History</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="btn-group" role="group">
+                <a href="{% url 'booking-history' %}" class="btn btn-outline-primary active">All ({{ total_bookings }})</a>
+                <a href="?status=confirmed" class="btn btn-outline-primary">Confirmed</a>
+                <a href="?status=cancelled" class="btn btn-outline-primary">Cancelled</a>
+                <a href="?status=completed" class="btn btn-outline-primary">Completed</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Flights -->
+    {% if flights %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-plane"></i> Flight Bookings ({{ flights.count }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Flight #</th>
+                            <th>Date</th>
+                            <th>Seats</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Booked</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in flights %}
+                        <tr>
+                            <td><strong>{{ booking.flight }}</strong></td>
+                            <td>{{ booking.date }}</td>
+                            <td>{{ booking.seat }}</td>
+                            <td>₹{{ booking.total_price|default:"0" }}</td>
+                            <td>
+                                <span class="badge bg-{% if booking.status == 'confirmed' %}success{% elif booking.status == 'cancelled' %}danger{% else %}info{% endif %}">
+                                    {{ booking.get_status_display }}
+                                </span>
+                            </td>
+                            <td><small>{{ booking.booking_date|date:"M d, Y" }}</small></td>
+                            <td>
+                                <a href="{% url 'generate-invoice' 'flight' booking.id %}" class="btn btn-sm btn-info">Invoice</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Hotels -->
+    {% if hotels %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-warning text-white">
+            <h5 class="mb-0"><i class="fas fa-hotel"></i> Hotel Bookings ({{ hotels.count }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Hotel</th>
+                            <th>Date</th>
+                            <th>Rooms</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Booked</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in hotels %}
+                        <tr>
+                            <td><strong>{{ booking.hotel_name }}</strong></td>
+                            <td>{{ booking.date }}</td>
+                            <td>{{ booking.room }}</td>
+                            <td>₹{{ booking.total_price|default:"0" }}</td>
+                            <td>
+                                <span class="badge bg-{% if booking.status == 'confirmed' %}success{% elif booking.status == 'cancelled' %}danger{% else %}info{% endif %}">
+                                    {{ booking.get_status_display }}
+                                </span>
+                            </td>
+                            <td><small>{{ booking.booking_date|date:"M d, Y" }}</small></td>
+                            <td>
+                                <a href="{% url 'generate-invoice' 'hotel' booking.id %}" class="btn btn-sm btn-info">Invoice</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Packages -->
+    {% if packages %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-suitcase"></i> Package Bookings ({{ packages.count }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Flight + Hotel</th>
+                            <th>Date</th>
+                            <th>Seats/Rooms</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Booked</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in packages %}
+                        <tr>
+                            <td><strong>{{ booking.flight }} + {{ booking.hotel_name }}</strong></td>
+                            <td>{{ booking.date }}</td>
+                            <td>{{ booking.seat }}/{{ booking.room }}</td>
+                            <td>₹{{ booking.total_price|default:"0" }}</td>
+                            <td>
+                                <span class="badge bg-{% if booking.status == 'confirmed' %}success{% elif booking.status == 'cancelled' %}danger{% else %}info{% endif %}">
+                                    {{ booking.get_status_display }}
+                                </span>
+                            </td>
+                            <td><small>{{ booking.booking_date|date:"M d, Y" }}</small></td>
+                            <td>
+                                <a href="{% url 'generate-invoice' 'package' booking.id %}" class="btn btn-sm btn-info">Invoice</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if not flights and not hotels and not packages %}
+    <div class="alert alert-info text-center">
+        <i class="fas fa-inbox"></i> No bookings found
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .table-responsive {
+        max-height: 600px;
+    }
+</style>
+{% endblock %}

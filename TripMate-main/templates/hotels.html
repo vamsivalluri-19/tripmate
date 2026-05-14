@@ -1,0 +1,423 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.main{
+    min-height: 100vh;
+}
+
+/* HERO SECTION */
+
+.hero-section{
+    background: linear-gradient(135deg,#dc3545,#ff6b6b);
+    padding: 60px 0;
+    border-radius: 0 0 40px 40px;
+}
+
+.hero-title{
+    color: white;
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.hero-subtitle{
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 35px;
+}
+
+/* SEARCH CARD */
+
+.search-card{
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+}
+
+/* HOTEL CARD */
+
+.hotel-card{
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.hotel-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.15);
+}
+
+/* BADGE */
+
+.book-badge{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #198754;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* IMAGE */
+
+.hotel-image{
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+}
+
+/* DETAILS */
+
+.hotel-details{
+    padding: 25px;
+}
+
+.hotel-name{
+    font-size: 34px;
+    font-weight: bold;
+    color: #212529;
+}
+
+.hotel-address{
+    color: gray;
+    margin-top: 10px;
+}
+
+.hotel-price{
+    font-size: 40px;
+    color: green;
+    font-weight: bold;
+}
+
+.price-night{
+    color: gray;
+    font-size: 18px;
+}
+
+/* RATING */
+
+.hotel-rating{
+    color: #ffc107;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+/* INFO GRID */
+
+.info-grid{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.info-card{
+    width: 30%;
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.info-card h6{
+    font-weight: bold;
+}
+
+/* AMENITIES */
+
+.amenities{
+    margin-top: 20px;
+}
+
+.amenity{
+    display: inline-block;
+    background: #eef3ff;
+    color: #0d6efd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* BUTTON */
+
+.book-btn{
+    width: 100%;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 25px;
+}
+
+/* EMPTY */
+
+.no-hotels{
+    text-align: center;
+    margin-top: 60px;
+    color: gray;
+}
+
+.no-hotels img{
+    width: 220px;
+    margin-bottom: 20px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .hero-title{
+        font-size: 34px;
+    }
+
+    .hotel-name{
+        font-size: 26px;
+    }
+
+    .hotel-price{
+        font-size: 30px;
+    }
+
+    .info-card{
+        width: 48%;
+    }
+
+    .hotel-image{
+        min-height: 240px;
+    }
+}
+
+</style>
+
+<!-- HERO -->
+<div class="hero-section">
+
+    <div class="container">
+
+        <h1 class="hero-title">
+            🏨 Search Hotels
+        </h1>
+
+        <p class="hero-subtitle">
+            Discover luxury stays and comfortable rooms for your trip
+        </p>
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-8">
+
+                <div class="search-card shadow-lg">
+
+                    <form class="form-group"
+                          action=""
+                          method="POST">
+
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <div class="text-center">
+
+                            <button class="btn btn-danger px-5">
+
+                                SEARCH HOTELS
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main container mt-5">
+
+    {% for i in Hotels %}
+
+    <div class="hotel-card shadow-lg mb-5">
+
+        <!-- BADGE -->
+        <div class="book-badge">
+            Available
+        </div>
+
+        <div class="row g-0">
+
+            <!-- IMAGE -->
+            <div class="col-md-4">
+
+                <img class="hotel-image"
+                     src="/media/{{ i.image1 }}"
+                     alt="{{ i.hotel_name }}">
+
+            </div>
+
+            <!-- DETAILS -->
+            <div class="col-md-8">
+
+                <div class="hotel-details">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                        <div>
+
+                            <div class="hotel-name">
+                                {{ i.hotel_name }}
+                            </div>
+
+                            <div class="hotel-address">
+                                📍 {{ i.hotel_address }}
+                                <br>
+                                {{ i.distfromap }} KM from nearest airport
+                            </div>
+
+                        </div>
+
+                        <div class="text-end">
+
+                            <div class="hotel-price">
+                                ₹{{ i.hotel_price }}
+                            </div>
+
+                            <div class="price-night">
+                                /night
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- RATING -->
+                    <div class="hotel-rating">
+
+                        {% with ''|center:i.hotel_rating as range %}
+                            {% for _ in range %}
+                                ★
+                            {% endfor %}
+                        {% endwith %}
+
+                    </div>
+
+                    <!-- INFO -->
+                    <div class="info-grid">
+
+                        <div class="info-card">
+
+                            <h6>Distance</h6>
+
+                            <p>{{ i.distfromap }} KM</p>
+
+                        </div>
+
+                        <div class="info-card">
+
+                            <h6>Check-In</h6>
+
+                            <p>12:00 PM</p>
+
+                        </div>
+
+                        <div class="info-card">
+
+                            <h6>Status</h6>
+
+                            <p class="text-success">
+                                Available
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- AMENITIES -->
+                    <div class="amenities">
+
+                        <span class="amenity">
+                            {{ i.amenities }}
+                        </span>
+
+                        <span class="amenity">
+                            Free WiFi
+                        </span>
+
+                        <span class="amenity">
+                            Parking
+                        </span>
+
+                        <span class="amenity">
+                            Restaurant
+                        </span>
+
+                        <span class="amenity">
+                            AC Rooms
+                        </span>
+
+                        <span class="amenity">
+                            Swimming Pool
+                        </span>
+
+                    </div>
+
+                    <!-- BUTTON -->
+                    <a href="{% url 'bookhotel' i.hotel_name|urlencode date|urlencode %}"
+                       class="btn btn-success book-btn">
+
+                       BOOK NOW
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <!-- EMPTY -->
+    <div class="no-hotels">
+
+        <img src="{% static 'img/hotel1.png' %}">
+
+        <h3>No Hotels Available</h3>
+
+        <p>
+            Try searching with another location or date.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

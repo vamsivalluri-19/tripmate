@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Travel Trip</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/styleone.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://fonts.googleapis.com/css?family=Spicy+Rice&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Viga&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent sticky-top site-nav">
+        <div class="container">
+          <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" height="40" class="mr-2">
+            <span class="font-weight-bold">TRAVEL TRIP</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ml-auto">
+              {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'package' %}">PACKAGES</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'flights' %}">FLIGHTS</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'hotels' %}">HOTELS</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'wishlist' %}">WISHLIST</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'booking-history' %}">HISTORY</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'notifications' %}">NOTIFICATIONS <span id="notifBadge" class="badge badge-danger" style="display:none;">0</span></a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="accountMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  ACCOUNT
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountMenu">
+                  <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+                  <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                  <a class="dropdown-item" href="{% url 'loyalty-points' %}">Loyalty Points</a>
+                  <form class="px-3 py-2" action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link dropdown-item p-0">Logout</button>
+                  </form>
+                </div>
+              </li>
+              {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'package' %}">PACKAGES</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'flights' %}">FLIGHTS</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'hotels' %}">HOTELS</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="accountMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  ACCOUNT
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountMenu">
+                  <a class="dropdown-item" href="{% url 'login_url' %}">Login</a>
+                  <a class="dropdown-item" href="{% url 'register_url' %}">Register</a>
+                </div>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <main class="site-shell">
+      {% block content %}
+      {% endblock %}
+    </main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-panel">
+      <div>
+        <h2 class="footer-title">About Us</h2>
+        <p class="footer-para">Welcome to Travel Trip, your gateway to unforgettable journeys. Explore curated packages, compare flights, book stays, and manage everything from one dashboard.</p>
+      </div>
+      <div class="footer-meta">
+        <p class="footer-para copy">Copyright <ion-icon name="at-circle-outline"></ion-icon> traveltrip.org</p>
+        <p class="footer-para copy">Built for fast bookings, simple navigation, and cleaner travel planning.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+<script type="text/javascript">
+function delay (URL) {
+  setTimeout( function() { window.location = URL }, 3000 );
+}
+</script>
+<script type="text/javascript">
+  function ani(){
+    document.getElementById('img').className ='click';
+  }
+</script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
+  <script>
+    // Fallback JS to help when clicks are intercepted by CSS/overlays
+    document.addEventListener('DOMContentLoaded', function(){
+      // Ensure buttons inside forms trigger submission
+      document.querySelectorAll('button[type="submit"]').forEach(function(btn){
+        btn.addEventListener('click', function(e){
+          var form = btn.closest('form');
+          if(form){
+            // if default prevented, force submit
+            if(e.defaultPrevented){
+              e.preventDefault();
+            }
+            try{ form.submit(); }catch(err){}
+          }
+        });
+      });
+
+      // Encode and navigate book links that may contain spaces
+      document.querySelectorAll('a[href^="/bookpackage"], a[href^="/bookflight"], a[href^="/bookhotel"]').forEach(function(a){
+        a.addEventListener('click', function(ev){
+          ev.preventDefault();
+          var href = a.getAttribute('href');
+          href = encodeURI(href);
+          window.location.href = href;
+        });
+      });
+
+      // Navbar unread notifications badge
+      fetch('/api/notifications/unread-count/')
+        .then(function(res){ return res.json(); })
+        .then(function(data){
+          var badge = document.getElementById('notifBadge');
+          if(!badge){ return; }
+          var count = data.unread_count || 0;
+          if(count > 0){
+            badge.textContent = count;
+            badge.style.display = 'inline-block';
+          }
+        })
+        .catch(function(){});
+
+      function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      // Quick add-to-wishlist buttons on result cards
+      document.querySelectorAll('.js-add-wishlist').forEach(function(btn){
+        btn.addEventListener('click', function(ev){
+          ev.preventDefault();
+          ev.stopPropagation();
+          var itemType = btn.getAttribute('data-item-type');
+          var itemId = btn.getAttribute('data-item-id');
+          if(!itemType || !itemId){ return; }
+          fetch('/wishlist/add/' + itemType + '/' + itemId + '/', {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken'),
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          })
+          .then(function(res){ return res.json(); })
+          .then(function(data){
+            btn.textContent = (data && data.message) ? data.message : 'Added';
+            btn.classList.remove('btn-outline-danger');
+            btn.classList.add('btn-success');
+          })
+          .catch(function(){
+            btn.textContent = 'Try again';
+          });
+        });
+      });
+    });
+  </script>
+  {% block extra_js %}{% endblock %}
+  </body>
+</html>

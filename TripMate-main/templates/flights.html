@@ -1,0 +1,460 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.main{
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+/* HERO */
+
+.search-section{
+    background: linear-gradient(135deg,#0d6efd,#4e9eff);
+    padding: 60px 0;
+    border-radius: 0 0 40px 40px;
+}
+
+.search-title{
+    color: white;
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.search-subtitle{
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 18px;
+}
+
+/* SEARCH CARD */
+
+.search-card{
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+}
+
+/* FLIGHT CARD */
+
+.flight-card{
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.flight-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.15);
+}
+
+/* BADGE */
+
+.book-badge{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #198754;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* HEADER */
+
+.flight-header{
+    background: linear-gradient(45deg,#0d6efd,#4e9eff);
+    color: white;
+    padding: 20px;
+}
+
+.airline-name{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.flight-number{
+    font-size: 18px;
+}
+
+.flight-price{
+    font-size: 36px;
+    font-weight: bold;
+}
+
+/* BODY */
+
+.flight-body{
+    padding: 25px;
+}
+
+/* ROUTE */
+
+.route-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.airport-box{
+    text-align: center;
+}
+
+.airport-box h4{
+    font-weight: bold;
+}
+
+.flight-arrow{
+    font-size: 35px;
+    color: #0d6efd;
+}
+
+/* INFO GRID */
+
+.info-grid{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.info-card{
+    width: 23%;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.info-card h6{
+    font-weight: bold;
+}
+
+/* FEATURES */
+
+.features{
+    margin-top: 20px;
+}
+
+.feature{
+    display: inline-block;
+    background: #eef3ff;
+    color: #0d6efd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* BUTTONS */
+
+.book-btn{
+    width: 100%;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* ALERT */
+
+.custom-alert{
+    border-radius: 15px;
+    padding: 20px;
+    font-size: 17px;
+}
+
+/* EMPTY */
+
+.no-flights{
+    text-align: center;
+    margin-top: 50px;
+    color: gray;
+}
+
+.no-flights img{
+    width: 220px;
+    margin-bottom: 20px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .search-title{
+        font-size: 32px;
+    }
+
+    .route-section{
+        flex-direction: column;
+    }
+
+    .flight-arrow{
+        transform: rotate(90deg);
+        margin: 15px 0;
+    }
+
+    .info-card{
+        width: 48%;
+    }
+
+    .airline-name{
+        font-size: 24px;
+    }
+
+    .flight-price{
+        font-size: 28px;
+    }
+}
+
+</style>
+
+<!-- SEARCH SECTION -->
+<div class="search-section">
+
+    <div class="container">
+
+        <h1 class="search-title">
+            ✈ Search Flights
+        </h1>
+
+        <p class="search-subtitle">
+            Find the best flights for your next journey
+        </p>
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-8">
+
+                <div class="search-card shadow-lg">
+
+                    <form class="form-group"
+                          action=""
+                          method="POST">
+
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <div class="text-center">
+
+                            <button class="btn btn-primary px-5">
+
+                                SEARCH FLIGHTS
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main container mt-5">
+
+    {% for i in Flights %}
+
+    <div class="flight-card shadow-lg mb-5">
+
+        <!-- BADGE -->
+        <div class="book-badge">
+            Available
+        </div>
+
+        <!-- HEADER -->
+        <div class="flight-header">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <div class="airline-name">
+                        {{ i.company }}
+                    </div>
+
+                    <div class="flight-number">
+                        Flight No: {{ i.flight_num }}
+                    </div>
+
+                </div>
+
+                <div class="flight-price">
+                    ₹{{ i.eprice }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="flight-body">
+
+            <!-- ROUTE -->
+            <div class="route-section">
+
+                <div class="airport-box">
+
+                    <h4>{{ i.source }}</h4>
+
+                    <p>Departure</p>
+
+                    <strong>{{ i.dept_time }}</strong>
+
+                </div>
+
+                <div class="flight-arrow">
+                    ✈
+                </div>
+
+                <div class="airport-box">
+
+                    <h4>{{ i.destination }}</h4>
+
+                    <p>Arrival</p>
+
+                    <strong>{{ i.dest_time }}</strong>
+
+                </div>
+
+            </div>
+
+            <!-- INFO -->
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <h6>Date</h6>
+
+                    <p>{{ date }}</p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Class</h6>
+
+                    <p>Economy</p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Baggage</h6>
+
+                    <p>20 KG</p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h6>Status</h6>
+
+                    <p class="text-success">
+                        On Time
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- FEATURES -->
+            <div class="features">
+
+                <span class="feature">
+                    Free Meal
+                </span>
+
+                <span class="feature">
+                    WiFi
+                </span>
+
+                <span class="feature">
+                    Refund Available
+                </span>
+
+                <span class="feature">
+                    Window Seat
+                </span>
+
+                <span class="feature">
+                    Extra Legroom
+                </span>
+
+            </div>
+
+            <!-- BUTTON -->
+            <div class="mt-4">
+
+                <a href="{% url 'bookflight' i.flight_num|urlencode date|urlencode %}"
+                   class="btn btn-success book-btn">
+
+                   BOOK NOW
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <!-- NO FLIGHTS -->
+    <div class="no-flights">
+
+        <img src="{% static 'img/plane.png' %}">
+
+        <h3>No Flights Available</h3>
+
+        <p>
+            Try searching with another route or date.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+    <!-- WARNING -->
+    {% if no_results %}
+
+    <div class="alert alert-warning custom-alert shadow-lg">
+
+        <strong>No flights found.</strong>
+
+        This demo project contains a limited database of flights.
+        Try using city routes that already exist in the system.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Hotel Details -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h4>{{ hotel.hotel_name }}</h4>
+                    <p><strong>Address:</strong> {{ hotel.hotel_address }}</p>
+                    <p><strong>Price:</strong> ₹{{ hotel.hotel_price }}/night</p>
+                    <p><strong>Amenities:</strong> {{ hotel.amenities }}</p>
+                    <p><strong>Current Rating:</strong> <span class="badge bg-success">{{ hotel.avg_rating|floatformat:1 }}/5.0</span></p>
+                </div>
+            </div>
+            
+            <!-- Add/Edit Review Form -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">{{ review|yesno:"Edit Your Review,Add Your Review" }}</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group mb-3">
+                            <label for="id_rating"><strong>Rating:</strong></label>
+                            {{ form.rating }}
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="id_comment"><strong>Your Experience:</strong></label>
+                            {{ form.comment }}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-check"></i> Submit Review
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- All Reviews -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Reviews ({{ all_reviews.count }})</h5>
+                </div>
+                <div class="card-body">
+                    {% for rev in all_reviews %}
+                        <div class="review-item mb-4 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong>{{ rev.user.username }}</strong>
+                                    <div class="text-warning">
+                                        {% for i in "x"|rjust:rev.rating %}★{% endfor %}{% for i in "x"|rjust:5|add:"-"|add:rev.rating %}☆{% endfor %}
+                                    </div>
+                                </div>
+                                <small class="text-muted">{{ rev.created_at|date:"M d, Y" }}</small>
+                            </div>
+                            <p class="mt-2">{{ rev.comment }}</p>
+                            <small class="text-muted"><i class="fas fa-thumbs-up"></i> {{ rev.helpful_count }} found this helpful</small>
+                        </div>
+                    {% empty %}
+                        <p class="text-center text-muted">No reviews yet. Be the first to review!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    
+    .review-item {
+        padding: 10px 0;
+    }
+    
+    .text-warning {
+        font-size: 18px;
+        color: #ffc107;
+    }
+</style>
+{% endblock %}

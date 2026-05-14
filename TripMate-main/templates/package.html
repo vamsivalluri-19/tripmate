@@ -1,0 +1,719 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.main-page{
+    min-height: 100vh;
+}
+
+/* HERO */
+
+.hero-section{
+    background: linear-gradient(135deg,#6f42c1,#9b59b6);
+    padding: 60px 0;
+    border-radius: 0 0 40px 40px;
+}
+
+.hero-title{
+    text-align: center;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.hero-subtitle{
+    text-align: center;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 35px;
+    font-size: 18px;
+}
+
+/* SEARCH */
+
+.search-card{
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+}
+
+/* SECTION TITLES */
+
+.section-title{
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+    margin: 70px 0 35px;
+}
+
+.flight-title{
+    color: #0d6efd;
+}
+
+.hotel-title{
+    color: #dc3545;
+}
+
+.place-title{
+    color: #198754;
+}
+
+/* COMMON CARD */
+
+.card-custom{
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.card-custom:hover{
+    transform: translateY(-6px);
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.15);
+}
+
+/* BADGE */
+
+.package-badge{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #198754;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* FLIGHT */
+
+.flight-header{
+    background: linear-gradient(45deg,#0d6efd,#4e9eff);
+    color: white;
+    padding: 20px;
+}
+
+.airline-name{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.flight-number{
+    font-size: 18px;
+}
+
+.flight-price{
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.flight-body{
+    padding: 25px;
+}
+
+/* ROUTE */
+
+.route-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.airport-box{
+    text-align: center;
+}
+
+.airport-box h4{
+    font-weight: bold;
+}
+
+.flight-arrow{
+    font-size: 35px;
+    color: #0d6efd;
+}
+
+/* HOTEL */
+
+.hotel-image{
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+}
+
+.hotel-details{
+    padding: 25px;
+}
+
+.hotel-name{
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.hotel-address{
+    color: gray;
+    margin-top: 10px;
+}
+
+.hotel-price{
+    font-size: 38px;
+    color: green;
+    font-weight: bold;
+}
+
+.hotel-rating{
+    color: #ffc107;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+/* INFO GRID */
+
+.info-grid{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.info-card{
+    width: 30%;
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.info-card h6{
+    font-weight: bold;
+}
+
+/* FEATURES */
+
+.features{
+    margin-top: 20px;
+}
+
+.feature{
+    display: inline-block;
+    background: #eef3ff;
+    color: #0d6efd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* PLACE CARD */
+
+.place-card{
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+.place-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 25px rgba(0,0,0,0.15);
+}
+
+.place-image{
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.place-details{
+    padding: 25px;
+}
+
+.place-name{
+    font-size: 30px;
+    font-weight: bold;
+    color: #198754;
+}
+
+/* BUTTON */
+
+.package-btn{
+    border-radius: 15px;
+    padding: 16px 35px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* ALERT */
+
+.custom-alert{
+    border-radius: 15px;
+    padding: 20px;
+    font-size: 17px;
+}
+
+/* EMPTY */
+
+.no-data{
+    text-align: center;
+    margin-top: 50px;
+    color: gray;
+}
+
+.no-data img{
+    width: 220px;
+    margin-bottom: 20px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .hero-title{
+        font-size: 34px;
+    }
+
+    .section-title{
+        font-size: 30px;
+    }
+
+    .route-section{
+        flex-direction: column;
+    }
+
+    .flight-arrow{
+        transform: rotate(90deg);
+        margin: 15px 0;
+    }
+
+    .info-card{
+        width: 48%;
+    }
+
+    .hotel-image,
+    .place-image{
+        min-height: 240px;
+    }
+
+    .hotel-name{
+        font-size: 26px;
+    }
+
+    .flight-price,
+    .hotel-price{
+        font-size: 28px;
+    }
+}
+
+</style>
+
+<div class="main-page">
+
+    <!-- HERO -->
+    <div class="hero-section">
+
+        <div class="container">
+
+            <h1 class="hero-title">
+                🎒 Travel Packages
+            </h1>
+
+            <p class="hero-subtitle">
+                Find complete travel experiences with flights,
+                hotels, and tourist places in one package.
+            </p>
+
+            <div class="row justify-content-center">
+
+                <div class="col-md-8">
+
+                    <div class="search-card shadow-lg">
+
+                        <form class="form-group"
+                              action=""
+                              method="POST">
+
+                            {% csrf_token %}
+
+                            {{ form.as_p }}
+
+                            <div class="text-center">
+
+                                <button type="submit"
+                                        class="btn btn-primary px-5">
+
+                                    SEARCH PACKAGE
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FLIGHTS -->
+    <div class="container">
+
+        <h2 class="section-title flight-title">
+            ✈ Flights
+        </h2>
+
+        {% for i in Flights %}
+
+        <div class="card-custom shadow-lg mb-5">
+
+            <div class="package-badge">
+                Included
+            </div>
+
+            <div class="flight-header">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                    <div>
+
+                        <div class="airline-name">
+                            {{ i.company }}
+                        </div>
+
+                        <div class="flight-number">
+                            Flight No: {{ i.flight_num }}
+                        </div>
+
+                    </div>
+
+                    <div class="flight-price">
+                        ₹{{ i.eprice }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="flight-body">
+
+                <div class="route-section">
+
+                    <div class="airport-box">
+
+                        <h4>{{ i.source }}</h4>
+
+                        <p>Departure</p>
+
+                        <strong>{{ i.dept_time }}</strong>
+
+                    </div>
+
+                    <div class="flight-arrow">
+                        ✈
+                    </div>
+
+                    <div class="airport-box">
+
+                        <h4>{{ i.destination }}</h4>
+
+                        <p>Arrival</p>
+
+                        <strong>{{ i.dest_time }}</strong>
+
+                    </div>
+
+                </div>
+
+                <div class="features">
+
+                    <span class="feature">
+                        Free Meal
+                    </span>
+
+                    <span class="feature">
+                        WiFi
+                    </span>
+
+                    <span class="feature">
+                        20KG Baggage
+                    </span>
+
+                    <span class="feature">
+                        Refund Available
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="no-data">
+
+            <img src="{% static 'img/plane.png' %}">
+
+            <h3>No Flights Found</h3>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- HOTELS -->
+    <div class="container">
+
+        <h2 class="section-title hotel-title">
+            🏨 Hotels
+        </h2>
+
+        {% for j in Hotels %}
+
+        <div class="card-custom shadow-lg mb-5">
+
+            <div class="row g-0">
+
+                <div class="col-md-4">
+
+                    <img class="hotel-image"
+                         src="/media/{{ j.image1 }}"
+                         alt="{{ j.hotel_name }}">
+
+                </div>
+
+                <div class="col-md-8">
+
+                    <div class="hotel-details">
+
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                            <div>
+
+                                <div class="hotel-name">
+                                    {{ j.hotel_name }}
+                                </div>
+
+                                <div class="hotel-address">
+                                    📍 {{ j.hotel_address }}
+                                    <br>
+                                    {{ j.distfromap }} KM from nearest airport
+                                </div>
+
+                            </div>
+
+                            <div class="hotel-price">
+                                ₹{{ j.hotel_price }}
+                            </div>
+
+                        </div>
+
+                        <!-- RATING -->
+                        <div class="hotel-rating">
+
+                            {% with ''|center:j.hotel_rating as range %}
+                                {% for _ in range %}
+                                    ★
+                                {% endfor %}
+                            {% endwith %}
+
+                        </div>
+
+                        <!-- INFO -->
+                        <div class="info-grid">
+
+                            <div class="info-card">
+
+                                <h6>Check-In</h6>
+
+                                <p>12:00 PM</p>
+
+                            </div>
+
+                            <div class="info-card">
+
+                                <h6>Distance</h6>
+
+                                <p>{{ j.distfromap }} KM</p>
+
+                            </div>
+
+                            <div class="info-card">
+
+                                <h6>Status</h6>
+
+                                <p class="text-success">
+                                    Available
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <!-- FEATURES -->
+                        <div class="features">
+
+                            <span class="feature">
+                                {{ j.amenities }}
+                            </span>
+
+                            <span class="feature">
+                                Free WiFi
+                            </span>
+
+                            <span class="feature">
+                                Parking
+                            </span>
+
+                            <span class="feature">
+                                Restaurant
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="no-data">
+
+            <img src="{% static 'img/hotel1.png' %}">
+
+            <h3>No Hotels Found</h3>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- PLACES -->
+    <div class="container">
+
+        <h2 class="section-title place-title">
+            🌍 Famous Places
+        </h2>
+
+        {% for k in Famplace %}
+
+        <div class="place-card shadow-lg mb-5">
+
+            <div class="row g-0">
+
+                <div class="col-md-5">
+
+                    <img class="place-image"
+                         src="/media/{{ k.image }}"
+                         alt="{{ k.place_name }}">
+
+                </div>
+
+                <div class="col-md-7">
+
+                    <div class="place-details">
+
+                        <div class="place-name">
+                            {{ k.place_name }}
+                        </div>
+
+                        <p class="mt-3 text-muted">
+                            {{ k.desc }}
+                        </p>
+
+                        <div class="features mt-4">
+
+                            <span class="feature">
+                                Tourist Spot
+                            </span>
+
+                            <span class="feature">
+                                Popular Destination
+                            </span>
+
+                            <span class="feature">
+                                Travel Guide
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="no-data">
+
+            <img src="{% static 'img/travel.png' %}">
+
+            <h3>No Places Found</h3>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- ALERT -->
+    {% if no_results %}
+
+    <div class="container mt-4">
+
+        <div class="alert alert-warning custom-alert shadow-lg">
+
+            <strong>No Results Found.</strong>
+
+            No matching flights, hotels, or tourist places
+            were found for your search.
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- BOOK BUTTON -->
+    {% if source and city and date and not no_results %}
+
+    <div class="text-center mt-5 mb-5">
+
+        <a href="{% url 'bookpackage' source|urlencode city|urlencode date|urlencode %}"
+           class="btn btn-success package-btn shadow-lg">
+
+           🎒 BOOK COMPLETE PACKAGE
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

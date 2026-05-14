@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+}
+
+.main-page{
+    min-height: 100vh;
+}
+
+/* HERO */
+
+.hero-section{
+    background: linear-gradient(135deg,#198754,#28a745);
+    padding: 70px 0;
+    border-radius: 0 0 40px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-circle1{
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    top: -120px;
+    left: -100px;
+}
+
+.hero-circle2{
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    bottom: -80px;
+    right: -60px;
+}
+
+.hero-title{
+    color: white;
+    text-align: center;
+    font-size: 52px;
+    font-weight: bold;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-subtitle{
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 35px;
+    position: relative;
+    z-index: 2;
+}
+
+/* SEARCH */
+
+.search-card{
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+/* SECTION TITLE */
+
+.section-title{
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+    margin: 70px 0 40px;
+    color: #198754;
+}
+
+/* PLACE CARD */
+
+.place-card{
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.place-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.15);
+}
+
+/* IMAGE */
+
+.place-image{
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+}
+
+/* DETAILS */
+
+.place-details{
+    padding: 30px;
+}
+
+.place-name{
+    font-size: 36px;
+    font-weight: bold;
+    color: #198754;
+}
+
+.place-desc{
+    color: #555;
+    margin-top: 15px;
+    line-height: 1.8;
+    font-size: 17px;
+}
+
+/* TAGS */
+
+.tags{
+    margin-top: 20px;
+}
+
+.tag{
+    display: inline-block;
+    background: #eefaf2;
+    color: #198754;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* FLOAT TITLE */
+
+.place-watermark{
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    font-size: 60px;
+    font-weight: bold;
+    color: rgba(25,135,84,0.08);
+    pointer-events: none;
+}
+
+/* BUTTON */
+
+.explore-btn{
+    margin-top: 25px;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+/* EMPTY */
+
+.empty-box{
+    text-align: center;
+    margin-top: 50px;
+    color: gray;
+}
+
+.empty-box img{
+    width: 220px;
+    margin-bottom: 20px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .hero-title{
+        font-size: 36px;
+    }
+
+    .section-title{
+        font-size: 32px;
+    }
+
+    .place-name{
+        font-size: 28px;
+    }
+
+    .place-image{
+        min-height: 240px;
+    }
+
+    .place-watermark{
+        font-size: 40px;
+    }
+}
+
+</style>
+
+<div class="main-page">
+
+    <!-- HERO -->
+    <div class="hero-section">
+
+        <div class="hero-circle1"></div>
+        <div class="hero-circle2"></div>
+
+        <div class="container">
+
+            <h1 class="hero-title">
+                🌍 Explore Famous Places
+            </h1>
+
+            <p class="hero-subtitle">
+                Discover amazing destinations and unforgettable travel experiences
+            </p>
+
+            <div class="row justify-content-center">
+
+                <div class="col-md-8">
+
+                    <div class="search-card shadow-lg">
+
+                        <form class="form-group"
+                              action=""
+                              method="POST">
+
+                            {% csrf_token %}
+
+                            {{ form.as_p }}
+
+                            <div class="text-center">
+
+                                <button class="btn btn-success px-5">
+
+                                    SEARCH PLACES
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PLACES -->
+    <div class="container">
+
+        <h2 class="section-title">
+            ✨ Popular Destinations
+        </h2>
+
+        {% for k in Famplace %}
+
+        <div class="place-card shadow-lg mb-5">
+
+            <div class="row g-0">
+
+                <!-- IMAGE -->
+                <div class="col-md-5">
+
+                    <img class="place-image"
+                         src="/media/{{ k.image }}"
+                         alt="{{ k.place_name }}">
+
+                </div>
+
+                <!-- DETAILS -->
+                <div class="col-md-7">
+
+                    <div class="place-details">
+
+                        <div class="place-name">
+                            {{ k.place_name }}
+                        </div>
+
+                        <div class="place-desc">
+                            {{ k.desc }}
+                        </div>
+
+                        <!-- TAGS -->
+                        <div class="tags">
+
+                            <span class="tag">
+                                Tourist Spot
+                            </span>
+
+                            <span class="tag">
+                                Famous Destination
+                            </span>
+
+                            <span class="tag">
+                                Weekend Getaway
+                            </span>
+
+                            <span class="tag">
+                                Travel Guide
+                            </span>
+
+                        </div>
+
+                        <!-- BUTTON -->
+                        <button class="btn btn-success explore-btn">
+
+                            Explore More
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- WATERMARK -->
+            <div class="place-watermark">
+
+                {{ k.place_name }}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <!-- EMPTY -->
+        <div class="empty-box">
+
+            <img src="{% static 'img/travel.png' %}">
+
+            <h3>No Places Found</h3>
+
+            <p>
+                Try searching for another destination.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
