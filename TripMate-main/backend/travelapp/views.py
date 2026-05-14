@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.admin.views.decorators import staff_member_required
@@ -658,11 +659,11 @@ def PackageSubmit(request,flight=None,hotel=None,date=None,seat=None,room=None):
 
 @login_required
 def CancelFlight(request,flight=None,date=None,seat=None):
-    price = 0;
-    flight = Flights.objects.filter(flight_num=flight)
-    for i in flight:
-        price = seat*i.eprice
-    f = {'Flight':flight}
+    seat = int(seat)
+    flight_obj = Flights.objects.filter(flight_num=flight).first()
+    flights = [flight_obj] if flight_obj else []
+    price = seat * flight_obj.eprice if flight_obj else 0
+    f = {'Flight':flights}
     p = {'price':price}
     s = {'seat':seat}
     d = {'date':date}
@@ -678,10 +679,21 @@ def ConfirmCancelFlight(request,flight=None,date=None,seat=None):
 
 @login_required
 def CancelHotel(request,hotel=None,date=None,room=None):
-    hotel = Hotels.objects.filter(hotel_name__iexact=hotel)
-    for i in hotel:
-        price = room*i.hotel_price
-    h = {'Hotel':hotel}
+    try:
+        room = int(room)
+    except Exception:
+        room = 0
+
+    _, hotel_obj = _remaining_hotel_rooms(hotel, date)
+    hotels = [hotel_obj] if hotel_obj else []
+    # compute price defensively to avoid accessing attributes on a None object
+    price = 0
+    if hotel_obj and getattr(hotel_obj, 'hotel_price', None) is not None:
+        try:
+            price = room * int(hotel_obj.hotel_price)
+        except Exception:
+            price = 0
+    h = {'Hotel':hotels}
     p = {'price':price}
     r = {'room':room}
     d = {'date':date}
@@ -691,22 +703,45 @@ def CancelHotel(request,hotel=None,date=None,room=None):
 @login_required
 def ConfirmCancelHotel(request,hotel=None,date=None,room=None):
     user = request.user
-    hotel = BookHotel.objects.filter(username_id=user).filter(hotel_name=hotel).filter(date=date).filter(room=room)
+    from urllib.parse import unquote_plus
+
+    hotel_name = unquote_plus(str(hotel)).strip()
+    hotel = BookHotel.objects.filter(username_id=user).filter(date=date).filter(room=room).filter(Q(hotel_name__iexact=hotel_name) | Q(hotel_name__iexact=hotel_name.replace('-', ' ')))
     hotel.delete()
     return redirect('dashboard')
 
 @login_required
 def CancelPackage(request,flight=None,seat=None,hotel=None,date=None,room=None):
     flight = Flights.objects.filter(flight_num=flight)
-    hotel = Hotels.objects.filter(hotel_name__iexact=hotel)
-    for i in hotel:
-        price = room*i.hotel_price
-    for j in flight:
-        price1 = seat*j.eprice
+    try:
+        room = int(room)
+    except Exception:
+        room = 0
+    try:
+        seat = int(seat)
+    except Exception:
+        seat = 0
+
+    _, hotel_obj = _remaining_hotel_rooms(hotel, date)
+    flight_obj = flight.first()
+    hotels = [hotel_obj] if hotel_obj else []
+    price = 0
+    if hotel_obj and getattr(hotel_obj, 'hotel_price', None) is not None:
+        try:
+            price = room * int(hotel_obj.hotel_price)
+        except Exception:
+            price = 0
+
+    price1 = 0
+    if flight_obj and getattr(flight_obj, 'eprice', None) is not None:
+        try:
+            price1 = seat * int(flight_obj.eprice)
+        except Exception:
+            price1 = 0
     f = {'Flight':flight}
     p = {'pricef':price1}
     s = {'seat':seat}
-    h = {'Hotel':hotel}
+    h = {'Hotel':hotels}
     p1 = {'priceh':price}
     r = {'room':room}
     d = {'date':date}
